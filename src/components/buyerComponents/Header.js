@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
+
 import {
     AppBar,
     Box,
@@ -33,6 +34,7 @@ const Header = () => {
         logout();
     };
 
+
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const handleOpenUserMenu = (event) => {
@@ -45,6 +47,7 @@ const Header = () => {
 
     return (
         <>
+
             <AppBar sx={{ background: "#b01083", padding: "15px" }}>
                 <Toolbar>
                     <Link to="/" style={{ textDecoration: "none" }}>
@@ -118,6 +121,7 @@ const Header = () => {
                                         >
                                             Logout
                                         </Typography>
+
                                     </MenuItem>
                                 </Menu>
                             </Box>
@@ -126,6 +130,7 @@ const Header = () => {
                     ) : (
                         <>
                             <Tabs
+
                                 sx={{
                                     marginLeft: "auto",
                                     fontFamily: "monospace",
@@ -152,15 +157,18 @@ const Header = () => {
                                 <Tab label="Home" LinkComponent={Link} to="/" value={0} />
                                 <Tab label="About Us" LinkComponent={Link} to="/about" value={1} />
                                 <Tab label="Contact" LinkComponent={Link} to="/contact" value={2} />
+
                             </Tabs>
 
                             {user ? (
                                 <>
                                     <Tooltip title="Open Cart">
+
                                         <Link
                                             to="/cart"
                                             style={{ marginLeft: "auto", textDecoration: "none", color: "white" }}
                                         >
+
                                             <ShoppingCartIcon sx={{ transform: "scale(1.5)" }} />
                                         </Link>
                                     </Tooltip>
@@ -186,6 +194,7 @@ const Header = () => {
                                             open={Boolean(anchorElUser)}
                                             onClose={handleCloseUserMenu}
                                         >
+
                                             <MenuItem onClick={handleCloseUserMenu}>
                                                 <Typography
                                                     textAlign="center"
@@ -206,12 +215,15 @@ const Header = () => {
                                                     Logout
                                                 </Typography>
                                             </MenuItem>
+
                                         </Menu>
                                     </Box>
                                 </>
                             ) : (
                                 <>
+
                                     <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
+
                                         <Button LinkComponent={Link} to="/login" sx={{ textDecoration: "none", color: "white" }}>Login</Button>
                                         <Button LinkComponent={Link} to="/signup" sx={{ textDecoration: "none", color: "white" }}>Register</Button>
                                     </Box>
@@ -226,3 +238,4 @@ const Header = () => {
 };
 
 export default Header;
+
