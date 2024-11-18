@@ -1,8 +1,23 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
-import { AppBar, Box, Tooltip, IconButton, Avatar, Menu, MenuItem, Tab, Tabs, Toolbar, Typography, useMediaQuery, useTheme, Button } from "@mui/material";
+
+import {
+    AppBar,
+    Box,
+    Tooltip,
+    IconButton,
+    Avatar,
+    Menu,
+    MenuItem,
+    Tab,
+    Tabs,
+    Toolbar,
+    Typography,
+    useMediaQuery,
+    useTheme,
+    Button,
+} from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import SpaIcon from '@mui/icons-material/Spa';
 import DrawerComp from "./Drawer";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useLogout } from "../../hooks/useLogout";
@@ -13,11 +28,13 @@ const Header = () => {
     const theme = useTheme();
     const isMatch = useMediaQuery(theme.breakpoints.down("md"));
 
-    const {logout} = useLogout();
+    const { logout } = useLogout();
 
-    const handleLogoutClick =()=>{
-        logout()
-    }
+    const handleLogoutClick = () => {
+        logout();
+    };
+
+
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const handleOpenUserMenu = (event) => {
@@ -30,25 +47,30 @@ const Header = () => {
 
     return (
         <>
-            <AppBar sx={{ background: "#EFA7A7", padding: "15px" }}>
+
+            <AppBar sx={{ background: "#b01083", padding: "15px" }}>
                 <Toolbar>
-                    <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-                    <img 
-                src="/logo.png" 
-                alt="Auramart Logo" 
-                style={{ height: "70px", width: "auto", margin: 0, padding: 0, display: "block" }} 
-            />
+                    <Link to="/" style={{ textDecoration: "none" }}>
+                        <img
+                            src="/logo1.jpg"
+                            alt="Auramart Logo"
+                            style={{ height: "50px", width: "auto", display: "block" }}
+                        />
                     </Link>
-                    <Typography sx={{
-                        fontSize: "2rem",
-                        paddingLeft: "2%",
-                        display: { xs: 'none', md: 'flex' },
-                        fontFamily: 'monospace',
-                        fontWeight: 700,
-                        letterSpacing: '.3rem',
-                        color: 'inherit',
-                        textDecoration: 'none',
-                    }} component={Link} to="/" >
+                    <Typography
+                        sx={{
+                            fontSize: "2rem",
+                            paddingLeft: "2%",
+                            display: { xs: 'none', md: 'flex' },
+                            fontFamily: 'unset',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'inherit',
+                            textDecoration: 'none',
+                        }}
+                        component={Link}
+                        to="/"
+                    >
                         AURAMART
                     </Typography>
                     {isMatch ? (
@@ -81,10 +103,25 @@ const Header = () => {
                                     onClose={handleCloseUserMenu}
                                 >
                                     <MenuItem onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center" sx={{ textDecoration: "none", color: "black" }} component={Link} to="/user-profile">Profile</Typography>
+                                        <Typography
+                                            textAlign="center"
+                                            sx={{ textDecoration: "none", color: "black" }}
+                                            component={Link}
+                                            to="/user-profile"
+                                        >
+                                            Profile
+                                        </Typography>
                                     </MenuItem>
                                     <MenuItem onClick={handleLogoutClick}>
-                                        <Typography textAlign="center" sx={{ textDecoration: "none", color: "black" }} component={Link} to="/">Logout</Typography>
+                                        <Typography
+                                            textAlign="center"
+                                            sx={{ textDecoration: "none", color: "black" }}
+                                            component={Link}
+                                            to="/"
+                                        >
+                                            Logout
+                                        </Typography>
+
                                     </MenuItem>
                                 </Menu>
                             </Box>
@@ -93,21 +130,45 @@ const Header = () => {
                     ) : (
                         <>
                             <Tabs
-                                sx={{ marginLeft: "auto", fontFamily: 'monospace', fontSize: "24px" }}
+
+                                sx={{
+                                    marginLeft: "auto",
+                                    fontFamily: "monospace",
+                                    fontSize: "24px",
+                                    ".MuiTab-root": {
+                                        textTransform: "none",
+                                    },
+                                    ".Mui-selected": {
+                                        color: "yellow", // Change the active tab color
+                                        fontWeight: "bold", // Highlight the active tab with bold font
+                                        backgroundColor: "#ffffff1a", // Add a subtle background
+                                        borderRadius: "8px",
+                                    },
+                                    ".MuiTabs-indicator": {
+                                        backgroundColor: "yellow", // Customize the underline indicator
+                                        height: "4px",
+                                    },
+                                }}
                                 indicatorColor="secondary"
                                 textColor="inherit"
                                 value={value}
-                                onChange={(e, value) => setValue(value)}
+                                onChange={(e, newValue) => setValue(newValue)}
                             >
-                                <Tab label="Home" LinkComponent={Link} to="/" />
-                                <Tab label="About Us" LinkComponent={Link} to="/about" />
-                                <Tab label="Contact" LinkComponent={Link} to="/contact" />
+                                <Tab label="Home" LinkComponent={Link} to="/" value={0} />
+                                <Tab label="About Us" LinkComponent={Link} to="/about" value={1} />
+                                <Tab label="Contact" LinkComponent={Link} to="/contact" value={2} />
+
                             </Tabs>
 
                             {user ? (
                                 <>
                                     <Tooltip title="Open Cart">
-                                        <Link to="/cart" style={{ marginLeft: "auto", textDecoration: "none", color: "white" }}>
+
+                                        <Link
+                                            to="/cart"
+                                            style={{ marginLeft: "auto", textDecoration: "none", color: "white" }}
+                                        >
+
                                             <ShoppingCartIcon sx={{ transform: "scale(1.5)" }} />
                                         </Link>
                                     </Tooltip>
@@ -135,10 +196,24 @@ const Header = () => {
                                         >
 
                                             <MenuItem onClick={handleCloseUserMenu}>
-                                                <Typography textAlign="center" sx={{ textDecoration: "none", color: "black" }} component={Link} to={user.role==="admin"?"/admin-dashboard":"/user-profile"}>{user.role==="admin"?"Admin Dashboard":"Profile"}</Typography>
+                                                <Typography
+                                                    textAlign="center"
+                                                    sx={{ textDecoration: "none", color: "black" }}
+                                                    component={Link}
+                                                    to={user.role === "admin" ? "/admin-dashboard" : "/user-profile"}
+                                                >
+                                                    {user.role === "admin" ? "Admin Dashboard" : "Profile"}
+                                                </Typography>
                                             </MenuItem>
                                             <MenuItem onClick={handleLogoutClick}>
-                                                <Typography textAlign="center" sx={{ textDecoration: "none", color: "black" }} component={Link} to="/">Logout</Typography>
+                                                <Typography
+                                                    textAlign="center"
+                                                    sx={{ textDecoration: "none", color: "black" }}
+                                                    component={Link}
+                                                    to="/"
+                                                >
+                                                    Logout
+                                                </Typography>
                                             </MenuItem>
 
                                         </Menu>
@@ -146,7 +221,9 @@ const Header = () => {
                                 </>
                             ) : (
                                 <>
-                                    <Box sx={{ flexGrow: 0, marginLeft: "auto" }} >
+
+                                    <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
+
                                         <Button LinkComponent={Link} to="/login" sx={{ textDecoration: "none", color: "white" }}>Login</Button>
                                         <Button LinkComponent={Link} to="/signup" sx={{ textDecoration: "none", color: "white" }}>Register</Button>
                                     </Box>
@@ -161,3 +238,4 @@ const Header = () => {
 };
 
 export default Header;
+
