@@ -55,54 +55,59 @@ const AllOrders = () => {
   return (
     <Box
       sx={{
-        marginTop: "20px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "20px",
+        marginTop: "30px",
+        padding: "30px",
+        backgroundColor: "#f7f8fa",
+        borderRadius: "8px",
       }}
     >
       {/* Orders Header */}
-      <Grid container wrap="nowrap" spacing={2} alignContent="left">
+      <Grid container spacing={2} alignItems="center">
         <Grid item>
-          <InboxIcon color="primary" fontSize="large" />
         </Grid>
         <Grid item xs>
           <Typography
             sx={{
-              fontSize: "1.2rem",
+              fontSize: "1.5rem",
               fontWeight: "bold",
               color: "#333",
             }}
           >
             Total Orders
           </Typography>
-          <Typography sx={{ fontSize: "1rem", color: "#666" }}>{orders.length}</Typography>
+          <Typography sx={{ fontSize: "1.1rem", color: "#888" }}>{orders.length}</Typography>
         </Grid>
       </Grid>
-
-      
 
       {/* Orders Table */}
       <TableContainer
         component={Paper}
         sx={{
-          margin: "auto",
-          maxWidth: "800px",
+          marginTop: "30px",
+          maxWidth: "100%",
           borderRadius: "12px",
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+          boxShadow: "0px 10px 15px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
         }}
       >
         <Table sx={{ minWidth: 650 }} aria-label="orders table">
           <TableHead>
-            <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-              <TableCell sx={{ fontWeight: "bold", fontSize: "1rem" }}>Order ID</TableCell>
-              <TableCell align="right" sx={{ fontWeight: "bold", fontSize: "1rem" }}>
-                Date
-              </TableCell>
-              <TableCell align="right" sx={{ fontWeight: "bold", fontSize: "1rem" }}>
-                Status
-              </TableCell>
+            <TableRow
+              sx={{
+                backgroundColor: "#2D3E50",
+                color: "#fff",
+                textTransform: "uppercase",
+                "& th": {
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  color: "#fff",
+                  padding: "12px 16px",
+                },
+              }}
+            >
+              <TableCell>Order ID</TableCell>
+              <TableCell align="right">Date</TableCell>
+              <TableCell align="right">Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -111,14 +116,32 @@ const AllOrders = () => {
                 <TableRow
                   key={order._id}
                   sx={{
-                    "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9" },
-                    "&:hover": { backgroundColor: "#f1f1f1" },
+                    "&:nth-of-type(odd)": {
+                      backgroundColor: "#fafafa",
+                    },
+                    "&:hover": {
+                      backgroundColor: "#f1f1f1",
+                      cursor: "pointer",
+                    },
                   }}
                 >
-                  <TableCell sx={{ fontSize: "0.9rem", color: "#333" }}>
+                  <TableCell
+                    sx={{
+                      fontSize: "1rem",
+                      color: "#333",
+                      padding: "12px 16px",
+                    }}
+                  >
                     {order._id.slice(0, 10)}
                   </TableCell>
-                  <TableCell align="right" sx={{ fontSize: "0.9rem", color: "#666" }}>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      fontSize: "1rem",
+                      color: "#555",
+                      padding: "12px 16px",
+                    }}
+                  >
                     {new Date(order.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell align="right">
@@ -127,9 +150,16 @@ const AllOrders = () => {
                         value={order.orderStatus}
                         onChange={(e) => approveOrder(order._id, e.target.value)}
                         sx={{
-                          fontSize: "0.9rem",
+                          fontSize: "1rem",
                           minWidth: 120,
+                          padding: "8px 14px",
+                          borderRadius: "8px",
+                          border: "1px solid #ddd",
+                          backgroundColor: "#fff",
                           "& .MuiSelect-select": { padding: "8px 14px" },
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: "8px",
+                          },
                         }}
                       >
                         <MenuItem value="Pending">Pending</MenuItem>

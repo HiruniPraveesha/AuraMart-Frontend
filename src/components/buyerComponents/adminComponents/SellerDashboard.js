@@ -3,11 +3,9 @@ import { Link } from "react-router-dom";
 import { Box, Card, CardMedia, CardContent, Typography, Rating, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from '@mui/material';
 import { useProductsContext } from '../../hooks/useProductsContext';
 import { useSellerLogout } from '../../hooks/useSellerLogout';
-import { useSellerAuthContext } from '../../hooks/useSellerAuthContext';
 
 const SellerDashboard = () => {
   const { products, dispatch } = useProductsContext();
-  const { seller } = useSellerAuthContext();
 
   useEffect(() => {
     const fetchProducts = async () => {
