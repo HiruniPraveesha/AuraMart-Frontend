@@ -20,13 +20,13 @@ import SellerDashboard from "./components/adminComponents/SellerDashboard";
 import AddProductForm from "./components/adminComponents/AddProductForm";
 import AdminDashboard from "./components/adminComponents/AdminDashboard";
 import Payment from "./components/buyerComponents/Payment";
-import SellerSignup from "./pages/SellerSignup";
-import SellerLogin from "./pages/SellerLogin";
+// import SellerSignup from "./pages/SellerSignup";
+// import SellerLogin from "./pages/SellerLogin";
 import { useSellerAuthContext } from "./hooks/useSellerAuthContext";
 
 function App() {
     const { user } = useAuthContext();
-    const { seller } = useSellerAuthContext();
+    // const { seller } = useSellerAuthContext();
     const location = useLocation();
 
     return (
@@ -53,9 +53,9 @@ function App() {
                     <Route path="/seller-dashboard" element={<SellerDashboard />} exact></Route>
                     <Route path="/addProduct" element={<AddProductForm />} exact></Route>
                     <Route path="/admin-dashboard" element={user ? <AdminDashboard /> : <Navigate to="/login" />} exact></Route>
-                    <Route path="/sign-up/seller" element={<SellerSignup />} exact></Route>
+                    {/* <Route path="/sign-up/seller" element={<SellerSignup />} exact></Route>
                     <Route path="/sellerSignup" element={!seller ? <SellerSignup /> : <Navigate to="/seller-dashboard" />} exact></Route>
-                    <Route path="/sellerLogin" element={!seller ? <SellerLogin /> : <Navigate to="/seller-dashboard" />} exact></Route>
+                    <Route path="/sellerLogin" element={!seller ? <SellerLogin /> : <Navigate to="/seller-dashboard" />} exact></Route> */}
                 </Routes>
             </main>
 

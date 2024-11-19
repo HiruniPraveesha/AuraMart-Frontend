@@ -52,8 +52,8 @@ const Header = () => {
                 <Toolbar>
                     <Link to="/" style={{ textDecoration: "none" }}>
                         <img
-                            src="/logo1.jpg"
-                            alt="Auramart Logo"
+                            src="logo.png"
+                            alt="Auramartdd Logo"
                             style={{ height: "50px", width: "auto", display: "block" }}
                         />
                     </Link>
