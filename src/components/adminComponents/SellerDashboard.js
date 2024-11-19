@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Box, Card, CardMedia, CardContent, Typography, Rating, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from '@mui/material';
 import { useProductsContext } from '../../hooks/useProductsContext';
-import { useSellerLogout } from '../../hooks/useSellerLogout';
+// import { useSellerLogout } from '../../hooks/useSellerLogout';
 
 const SellerDashboard = () => {
   const { products, dispatch } = useProductsContext();
@@ -31,11 +31,11 @@ const SellerDashboard = () => {
     }
   };
 
-  const { sellerlogout } = useSellerLogout();
+  // const { sellerlogout } = useSellerLogout();
 
-  const handleClick = () => {
-    sellerlogout();
-  };
+  // const handleClick = () => {
+  //   sellerlogout();
+  // };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', minHeight: '100vh', backgroundColor: '#F5F5F5' }}>
