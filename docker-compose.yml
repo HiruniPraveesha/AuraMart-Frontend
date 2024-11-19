@@ -1,0 +1,16 @@
+
+services:
+  
+  web:
+    build: ./
+    ports:
+      - "3000:3000"
+    networks:
+      auramart-network:
+
+
+networks:
+  auramart-network:
+
+volumes:
+  AURAMART-Microservice:
