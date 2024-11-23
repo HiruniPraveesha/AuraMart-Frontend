@@ -13,7 +13,7 @@ import AllOrders from './AllOrders';
 import UsersChart from './UsersChart';
 import AdminDashboard from './AdminDashboard';
 
-const AdminDashboard = () => {
+const Dashboard = () => {
   const { user } = useAuthContext();
   const [activeLink, setActiveLink] = useState('link1');
 
@@ -109,7 +109,7 @@ const AdminDashboard = () => {
             <Item>
               {activeLink === 'link1' && <AllOrders />}
               {activeLink === 'link2' && <Users />}
-              {activeLink === 'link3' && <SellerDashboard />}
+              {activeLink === 'link3' && <AdminDashboard />}
               {activeLink === 'link4' && <UsersChart />}
             </Item>
           </Grid>
@@ -119,4 +119,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default Dashboard;

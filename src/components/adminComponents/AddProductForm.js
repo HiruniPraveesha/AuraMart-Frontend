@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from "react-router-dom";
 import { Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 
 const AddProductForm = () => {
@@ -15,21 +15,46 @@ const AddProductForm = () => {
         images: [{ url: '' }],
     });
 
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertType, setAlertType] = useState(''); // 'success' or 'error'
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(product);
         try {
-            await axios.post('http://localhost:7005/api/product/', product);
-            console.log('Product added successfully!');
+            await axios.post('http://localhost:7005/api/product', product);
+            setAlertMessage('Product added successfully!');
+            setAlertType('success');
+            setProduct({
+                title: '',
+                description: '',
+                price: '',
+                category: '',
+                brand: '',
+                quantity: '',
+                images: [{ url: '' }],
+            }); // Reset form
+
+            // Hide the alert after 9 seconds
+            setTimeout(() => {
+                setAlertMessage('');
+                setAlertType('');
+            }, 2000);
         } catch (error) {
-            console.error(error);
+            setAlertMessage('Failed to add product. Please try again.');
+            setAlertType('error');
+
+            // Hide the alert after 9 seconds
+            setTimeout(() => {
+                setAlertMessage('');
+                setAlertType('');
+            }, 2000);
         }
     };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        if (name === "images") {
+        if (name === 'images') {
             setProduct({
                 ...product,
                 images: [{ url: value }],
@@ -40,64 +65,141 @@ const AddProductForm = () => {
     };
 
     return (
-        <Box sx={{ overflowX: "hidden" }}>
-            <div className="container">
-                <div className="sidebar">
-                    <div className="logo">
-                        <h1>AyurMart</h1>
-                    </div>
-                    <div className="menu">
-                        <Link to="/seller-dashboard">Seller Dashboard</Link>
-                        <Link to="/addProduct">Add Product</Link>
-                        <Link to="/profile">Profile</Link>
-                    </div>
-                </div>
-                <div className="content">
-                    <Box sx={{ overflowX: "hidden", marginTop: "96px", marginLeft: "400px", marginRight: "300px" }}>
-                        <h1 align='center'>Add Product</h1>
-                        <form onSubmit={handleSubmit}>
-                            <label>
-                                Title:
-                                <input type="text" name="title" value={product.title} onChange={handleChange} required />
-                            </label>
-                            <br />
-                            <label>
-                                Description:
-                                <textarea name="description" value={product.description} onChange={handleChange} required />
-                            </label>
-                            <br />
-                            <label>
-                                Price:
-                                <input type="number" name="price" value={product.price} onChange={handleChange} required />
-                            </label>
-                            <br />
-                            <label>
-                                Category:
-                                <input type="text" name="category" value={product.category} onChange={handleChange} required />
-                            </label>
-                            <br />
-                            <label>
-                                Brand:
-                                <input type="text" name="brand" value={product.brand} onChange={handleChange} required />
-                            </label>
-                            <br />
-                            <label>
-                                Quantity:
-                                <input type="number" name="quantity" value={product.quantity} onChange={handleChange} required />
-                            </label>
-                            <br />
-                            <label>
-                                Image URL:
-                                <input type="text" name="images" value={product.images[0]?.url} onChange={handleChange} required />
-                            </label>
-                            <br />
-                            <Box sx={{ marginLeft: "200px", marginRight: "300px" }}>
-                                <button type="submit">Add Product</button>
-                            </Box>
-                        </form>
+        <Box sx={{ overflowX: "hidden", display: 'flex', justifyContent: 'center' }}>
+           
+                <div className="content" style={{ width: '100%', maxWidth: '600px' }}>
+                <h1 align="center">Add Product</h1>
+
+                <form
+                    onSubmit={handleSubmit}
+                    style={{
+                        border: '2px solid #000',
+                        borderRadius: '10px',
+                        padding: '20px',
+                        backgroundColor: '#f9f9f9',
+                    }}
+                >
+                    <label>
+                        Title:
+                        <input
+                            type="text"
+                            name="title"
+                            value={product.title}
+                            onChange={handleChange}
+                            required
+                            style={{ width: '100%', marginBottom: '10px' }}
+                        />
+                    </label>
+                    <br />
+                    <label>
+                        Description:
+                        <textarea
+                            name="description"
+                            value={product.description}
+                            onChange={handleChange}
+                            required
+                            style={{ width: '100%', marginBottom: '10px' }}
+                        />
+                    </label>
+                    <br />
+                    <label>
+                        Price:
+                        <input
+                            type="number"
+                            name="price"
+                            value={product.price}
+                            onChange={handleChange}
+                            required
+                            style={{ width: '100%', marginBottom: '10px' }}
+                        />
+                    </label>
+                    <br />
+                    <label>
+                        Category:
+                        <select
+                            name="category"
+                            value={product.category}
+                            onChange={handleChange}
+                            required
+                            style={{
+                                width: '100%',
+                                marginTop: '8px',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                border: '2px solid #ccc',
+                                backgroundColor: '#fff',
+                                fontSize: '16px',
+                                cursor: 'pointer',
+                                outline: 'none',
+                            }}
+                        >
+                            <option value="">Select a category</option>
+                            <option value="Skin Care">Skin Care</option>
+                            <option value="Hair Care">Hair Care</option>
+                            <option value="Foot Care">Foot Care</option>
+                        </select>
+                    </label>
+                    <br />
+                    <label>
+                        Brand:
+                        <input
+                            type="text"
+                            name="brand"
+                            value={product.brand}
+                            onChange={handleChange}
+                            required
+                            style={{ width: '100%', marginBottom: '10px' }}
+                        />
+                    </label>
+                    <br />
+                    <label>
+                        Quantity:
+                        <input
+                            type="number"
+                            name="quantity"
+                            value={product.quantity}
+                            onChange={handleChange}
+                            required
+                            style={{ width: '100%', marginBottom: '10px' }}
+                        />
+                    </label>
+                    <br />
+                    <label>
+                        Image URL:
+                        <input
+                            type="text"
+                            name="images"
+                            value={product.images[0]?.url}
+                            onChange={handleChange}
+                            required
+                            style={{ width: '100%', marginBottom: '20px' }}
+                        />
+                    </label>
+                    <br />
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <button type="submit">Add Product</button>
                     </Box>
-                </div>
+                </form>
+
+                {/* Alert Message */}
+                {alertMessage && (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+                        <div
+                            style={{
+                                padding: '10px',
+                                color: alertType === 'success' ? 'green' : 'red',
+                                border: `1px solid ${alertType === 'success' ? 'green' : 'red'}`,
+                                borderRadius: '5px',
+                                textAlign: 'center',
+                                backgroundColor: alertType === 'success' ? '#d4edda' : '#f8d7da',
+                            }}
+                        >
+                            {alertMessage}
+                        </div>
+                    </Box>
+                )}
             </div>
+            
         </Box>
     );
 };

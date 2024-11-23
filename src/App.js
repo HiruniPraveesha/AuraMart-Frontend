@@ -18,6 +18,7 @@ import CheckoutSuccess from "./components/buyerComponents/CheckoutSuccess";
 import NotFound from "./components/buyerComponents/NotFound";
 import AdminDashboard from "./components/adminComponents/AdminDashboard";
 import AddProductForm from "./components/adminComponents/AddProductForm";
+import AllOrders from "./components/adminComponents/AllOrders";
 import Admin2 from "./components/adminComponents/Admin2";
 import Payment from "./components/buyerComponents/Payment";
 import AdminSignup from "./pages/AdminSignup";
@@ -32,7 +33,7 @@ function App() {
     return (
         <React.Fragment>
             {/* Conditionally render Header */}
-            {location.pathname !== "/admin-dashboard" && <Header />}
+            {location.pathname !== "/admin-dashboard" && location.pathname !== "/addProduct" && <Header />}
 
             <main style={{ marginBottom: "50px" }}>
                 <Routes>
@@ -52,6 +53,7 @@ function App() {
                     <Route path="*" element={<NotFound />} exact></Route>
                     <Route path="/admin-dashboard" element={<AdminDashboard />} exact></Route>
                     <Route path="/addProduct" element={<AddProductForm />} exact></Route>
+                    <Route path="/allOrders" element={<AllOrders />} exact></Route>
                     <Route path="/admin2" element={!admin ? <Admin2 /> : <Navigate to="/admin2" />} exact></Route>
                     {/* <Route path="/sign-up/admin" element={<AdminSignup />} exact></Route> */}
                     <Route path="/adminSignup" element={!admin ? <AdminSignup /> : <Navigate to="/admin-dashboard" />} exact></Route>

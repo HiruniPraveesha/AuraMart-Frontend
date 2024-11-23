@@ -1,141 +1,306 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
-import { Box, Card, CardMedia, CardContent, Typography, Rating, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from '@mui/material';
+import { Box, Card, CardMedia, CardContent, Typography, Rating, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button, Modal, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useProductsContext } from '../../hooks/useProductsContext';
 import { useAdminLogout } from '../../hooks/useAdminLogout'
 import { useAdminAuthContext } from '../../hooks/useAdminAuthContext';
+import Sidebar from './Sidebar';
 
 const AdminDashboard = () => {
 
     const { products, dispatch } = useProductsContext()
     const { admin } = useAdminAuthContext()
 
+    const [open, setOpen] = useState(false);
+    const [currentProduct, setCurrentProduct] = useState(null);
+    const [editedProduct, setEditedProduct] = useState({ price: '', quantity: '', description: '' });
+
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [productToDelete, setProductToDelete] = useState(null);
+
     useEffect(() => {
         const fetchProducts = async () => {
-            const response = await fetch('http://localhost:7005/api/product')
-            const json = await response.json()
-
-            if (response.ok) {
-                dispatch({ type: 'SET_PRODUCTS', payload: json })
-            }
-        }
-
-        fetchProducts()
-    }, [dispatch]);
-
-    const handleDelete = async (productId) => {
-        const response = await fetch('http://localhost:7005/api/product/' + productId, {
-            method: 'DELETE'
-        })
-        const json = await response.json()
-
+          const response = await fetch('http://localhost:7005/api/product');
+          const json = await response.json();
+    
+          if (response.ok) {
+            dispatch({ type: 'SET_PRODUCTS', payload: json });
+          }
+        };
+    
+        fetchProducts();
+      }, [dispatch]);
+    
+      const handleDelete = async () => {
+        if (!productToDelete) return;
+        
+        const response = await fetch('http://localhost:7005/api/product/' + productToDelete, {
+          method: 'DELETE',
+        });
+        const json = await response.json();
+    
         if (response.ok) {
-            dispatch({ type: 'DELETE_PRODUCT', payload: json })
+          dispatch({ type: 'DELETE_PRODUCT', payload: json });
+          setOpenDeleteDialog(false); // Close the confirmation dialog
         }
-    }
+      };
+    
+      const handleUpdate = async (productId) => {
+        const response = await fetch('http://localhost:7005/api/product/' + productId, {
+          method: 'PUT',
+        });
+        const json = await response.json();
+    
+        if (response.ok) {
+          dispatch({ type: 'UPDATE_PRODUCT', payload: json });
+        }
+      };
+    
+      const { adminlogout } = useAdminLogout()
 
-    const { adminlogout } = useAdminLogout()
-
-    const handleClick = () => {
-        adminlogout()
-    }
+      const handleClick = () => {
+          adminlogout()
+      }
+    
+      const handleOpen = (product) => {
+        setCurrentProduct(product);
+        setEditedProduct({ price: product.price, quantity: product.quantity, description: product.description });
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };
+    
+      const handleEditChange = (e) => {
+        const { name, value } = e.target;
+        setEditedProduct((prevState) => ({ ...prevState, [name]: value }));
+      };
+    
+      const handleSubmitEdit = async () => {
+        const { price, quantity, description } = editedProduct;
+        const updatedProduct = { price, quantity, description };
+        
+        // Optimistically update the products state
+        const updatedProductList = products.map((product) =>
+          product._id === currentProduct._id
+            ? { ...product, price, quantity, description }
+            : product
+        );
+        dispatch({ type: 'SET_PRODUCTS', payload: updatedProductList }); // Update state optimistically
+      
+        const response = await fetch(`http://localhost:7005/api/product/${currentProduct._id}`, {
+          method: 'PUT',
+          body: JSON.stringify(updatedProduct),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const json = await response.json();
+      
+        if (response.ok) {
+          handleClose();  // Close the modal
+        } else {
+          // Handle any error if the update failed (optional)
+          alert('Update failed');
+        }
+      };
+      
+    
+      // Open delete confirmation dialog
+      const handleDeleteClick = (productId) => {
+        setProductToDelete(productId);
+        setOpenDeleteDialog(true);
+      };
+    
+      // Close delete confirmation dialog
+      const handleCancelDelete = () => {
+        setProductToDelete(null);
+        setOpenDeleteDialog(false);
+      };
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <div className="container">
-            <div className="sidebar">
-                <div className="logo">
-                <h1>AuraMart</h1>
-                </div>
-                <div className="menu">
-                <Link to="/admin-dashboard">Admin Dashboard</Link>
-                <Link to="/addProduct">Add Product</Link>
-                {!admin && (
-                    <div>
-                        <Link to="/adminLogin">Login</Link>
-                        <Link to="/adminrSignup">Signup</Link>
-                    </div>
-                )}
-                {admin && (
-                    <div>
-                        <Button onClick={handleClick}>Log Out</Button>
-                        <span>{admin.email}</span>
-                        </div>
-                )}
-                </div>
-            </div>
-            <div className="content">
-            <Box sx={{ overflowX: "hidden", marginTop: "96px", marginLeft: "200px" }}>
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell style={{ fontSize: '18px', fontWeight: 'bold' }}>Product</TableCell>
-                            <TableCell style={{ fontSize: '18px', fontWeight: 'bold' }}>Price</TableCell>
-                            <TableCell style={{ fontSize: '18px', fontWeight: 'bold' }}>Total Ratings</TableCell>
-                            <TableCell style={{ fontSize: '18px', fontWeight: 'bold' }}>Description</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {products && products.map((product) => (
-                            <TableRow key={product._id}>
-                                <TableCell>
-                                    <Link to={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
-                                        {product.images && product.images.length > 0 && (
-                                            <Card sx={{
-                                                display: "flex",
-                                                py: 2,
-                                                flexDirection: "column",
-                                                height: "100%",
-                                                maxWidth: "250px",
-                                                transition: "transform 0.2s ease-in-out",
-                                                "&:hover": {
-                                                    transform: "scale(1.02)",
-                                                    boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.1)"
-                                                }
-                                            }}>
-                                                <CardMedia component="img" height="auto" image={product.images[0].url} alt={product.title} sx={{ pb: 1, width: '30%', margin: "0 auto" }} />
-    
-    
-                                                <CardContent sx={{ flex: 1 , margin: "0 auto"}}>
-                                                    <Box>
-                                                        <Typography variant="h6" gutterBottom style={{ fontWeight: 600 }} >
-                                                            {product.title}
-                                                        </Typography>
-                                                    </Box>
-                                                </CardContent>
-                                            </Card>
-                                        )}
-                                    </Link>
-                                </TableCell>
-                                <TableCell>Rs.{product.price}.00</TableCell>
-                                <TableCell>
-                                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                                        <Rating name="totalrating" value={product.totalrating} readOnly />
-                                        <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
-                                            ({product.ratings.length} ratings)
-                                        </Typography>
-                                    </Box>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography variant="body1" color="textSecondary" paragraph={true}>
-                                        {product.description}
-                                    </Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Button style={{ backgroundColor: '#BE2308', color: 'white' }} onClick={() => handleDelete(product._id)}>Delete</Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Box>
-    </div>
-    </div>
+            <Sidebar />
+      <TableContainer component={Paper} sx={{boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)' }}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: '#6200EA' }}>
+              <TableCell style={{ fontSize: '18px', fontWeight: 'bold', color: '#FFFFFF' }}>Product</TableCell>
+              <TableCell style={{ fontSize: '18px', fontWeight: 'bold', color: '#FFFFFF' }}>Price</TableCell>
+              <TableCell style={{ fontSize: '18px', fontWeight: 'bold', color: '#FFFFFF' }}>Total Ratings</TableCell>
+              <TableCell style={{ fontSize: '18px', fontWeight: 'bold', color: '#FFFFFF' }}>Description</TableCell>
+              <TableCell style={{ fontSize: '18px', fontWeight: 'bold', color: '#FFFFFF' }}>Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {products &&
+              products.map((product) => (
+                <TableRow key={product._id} sx={{ '&:hover': { backgroundColor: '#F0F0F0' } }}>
+                  <TableCell>
+                    <Link to={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
+                      {product.images && product.images.length > 0 && (
+                        <Card
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: '100%',
+                            maxWidth: '250px',
+                            transition: 'transform 0.2s ease-in-out',
+                            '&:hover': {
+                              transform: 'scale(1.02)',
+                              boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.1)',
+                            },
+                          }}
+                        >
+                          <CardMedia
+                            component="img"
+                            height="auto"
+                            image={product.images[0].url}
+                            alt={product.title}
+                            sx={{ pb: 1, width: '100%', height: '150px', objectFit: 'cover' }}
+                          />
+                          <CardContent>
+                            <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, textAlign: 'center' }}>
+                              {product.title}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      )}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      Rs. {product.price}.00
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Rating name="totalrating" value={product.totalrating} readOnly />
+                      <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
+                        ({product.ratings.length} ratings)
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2" color="textSecondary">
+                      {product.description}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: '#D32F2F',
+                        color: '#FFFFFF',
+                        '&:hover': { backgroundColor: '#B71C1C' },
+                      }}
+                      onClick={() => handleDeleteClick(product._id)}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: '#1976D2',
+                        color: '#FFFFFF',
+                        '&:hover': { backgroundColor: '#388E3C' },
+                        marginTop: '10px',
+                      }}
+                      onClick={() => handleOpen(product)}
+                    >
+                      Edit
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* Modal for editing product */}
+      <Modal
+  open={open}
+  onClose={handleClose}
+  sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }}
+>
+  <Box sx={{ backgroundColor: 'white', padding: 2, borderRadius: 2, width: '400px' }}>
+    <Typography variant="h6" sx={{ marginBottom: 2 }}>Edit Product</Typography>
+    <TextField
+      label="Price"
+      variant="outlined"
+      fullWidth
+      name="price"
+      value={editedProduct.price}
+      onChange={handleEditChange}
+      sx={{ marginBottom: 2 }}
+    />
+    <TextField
+      label="Quantity"
+      variant="outlined"
+      fullWidth
+      name="quantity"
+      value={editedProduct.quantity}
+      onChange={handleEditChange}
+      sx={{ marginBottom: 2 }}
+    />
+    <TextField
+      label="Description"
+      variant="outlined"
+      fullWidth
+      name="description"
+      value={editedProduct.description}
+      onChange={handleEditChange}
+      sx={{ marginBottom: 2 }}
+    />
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={handleClose}
+        sx={{ width: '48%' }}
+      >
+        Cancel
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSubmitEdit}
+        sx={{ width: '48%' }}
+      >
+        Update Product
+      </Button>
     </Box>
-    )  
-}
+  </Box>
+</Modal>
+
+
+      {/* Delete confirmation dialog */}
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleCancelDelete}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete this product?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="primary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
+    );  
+};
 
 export default AdminDashboard;
 
