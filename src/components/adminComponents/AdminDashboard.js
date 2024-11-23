@@ -1,122 +1,141 @@
-import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import { useAuthContext } from '../../hooks/useAuthContext';
-import Users from './Users';
-import AllOrders from './AllOrders';
-import UsersChart from './UsersChart';
-import SellerDashboard from './SellerDashboard';
+import React, { useEffect } from 'react';
+import { Link } from "react-router-dom";
+import { Box, Card, CardMedia, CardContent, Typography, Rating, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from '@mui/material';
+import { useProductsContext } from '../../hooks/useProductsContext';
+import { useAdminLogout } from '../../hooks/useAdminLogout'
+import { useAdminAuthContext } from '../../hooks/useAdminAuthContext';
 
 const AdminDashboard = () => {
-  const { user } = useAuthContext();
-  const [activeLink, setActiveLink] = useState('link1');
 
-  const handleLinkClick = (link) => {
-    setActiveLink(link);
-  };
+    const { products, dispatch } = useProductsContext()
+    const { admin } = useAdminAuthContext()
 
-  const links = [
-    { name: 'Orders', link: 'link1', icon: '📦' },
-    { name: 'Users', link: 'link2', icon: '👤' },
-    { name: 'Products', link: 'link3', icon: '🛍️' },
-    { name: 'Statistic Displays', link: 'link4', icon: '📊' },
-  ];
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const response = await fetch('http://localhost:7005/api/product')
+            const json = await response.json()
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
+            if (response.ok) {
+                dispatch({ type: 'SET_PRODUCTS', payload: json })
+            }
+        }
 
-  return (
-    <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-      {/* Sidebar */}
-      <Box
-        sx={{
-          width: '300px',
-          backgroundColor: '#4A148C',
-          color: '#fff',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-          padding: '20px',
-        }}
-      >
-        <Box
-          sx={{
-            textAlign: 'center',
-            padding: '15px',
-            borderRadius: '8px',
-            backgroundColor: '#7B1FA2',
-            fontSize: '20px',
-            fontWeight: 'bold',
-          }}
-        >
-          Admin Dashboard
+        fetchProducts()
+    }, [dispatch]);
+
+    const handleDelete = async (productId) => {
+        const response = await fetch('http://localhost:7005/api/product/' + productId, {
+            method: 'DELETE'
+        })
+        const json = await response.json()
+
+        if (response.ok) {
+            dispatch({ type: 'DELETE_PRODUCT', payload: json })
+        }
+    }
+
+    const { adminlogout } = useAdminLogout()
+
+    const handleClick = () => {
+        adminlogout()
+    }
+
+    return (
+        <Box sx={{ display: 'flex' }}>
+            <div className="container">
+            <div className="sidebar">
+                <div className="logo">
+                <h1>AuraMart</h1>
+                </div>
+                <div className="menu">
+                <Link to="/admin-dashboard">Admin Dashboard</Link>
+                <Link to="/addProduct">Add Product</Link>
+                {!admin && (
+                    <div>
+                        <Link to="/adminLogin">Login</Link>
+                        <Link to="/adminrSignup">Signup</Link>
+                    </div>
+                )}
+                {admin && (
+                    <div>
+                        <Button onClick={handleClick}>Log Out</Button>
+                        <span>{admin.email}</span>
+                        </div>
+                )}
+                </div>
+            </div>
+            <div className="content">
+            <Box sx={{ overflowX: "hidden", marginTop: "96px", marginLeft: "200px" }}>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell style={{ fontSize: '18px', fontWeight: 'bold' }}>Product</TableCell>
+                            <TableCell style={{ fontSize: '18px', fontWeight: 'bold' }}>Price</TableCell>
+                            <TableCell style={{ fontSize: '18px', fontWeight: 'bold' }}>Total Ratings</TableCell>
+                            <TableCell style={{ fontSize: '18px', fontWeight: 'bold' }}>Description</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {products && products.map((product) => (
+                            <TableRow key={product._id}>
+                                <TableCell>
+                                    <Link to={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
+                                        {product.images && product.images.length > 0 && (
+                                            <Card sx={{
+                                                display: "flex",
+                                                py: 2,
+                                                flexDirection: "column",
+                                                height: "100%",
+                                                maxWidth: "250px",
+                                                transition: "transform 0.2s ease-in-out",
+                                                "&:hover": {
+                                                    transform: "scale(1.02)",
+                                                    boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.1)"
+                                                }
+                                            }}>
+                                                <CardMedia component="img" height="auto" image={product.images[0].url} alt={product.title} sx={{ pb: 1, width: '30%', margin: "0 auto" }} />
+    
+    
+                                                <CardContent sx={{ flex: 1 , margin: "0 auto"}}>
+                                                    <Box>
+                                                        <Typography variant="h6" gutterBottom style={{ fontWeight: 600 }} >
+                                                            {product.title}
+                                                        </Typography>
+                                                    </Box>
+                                                </CardContent>
+                                            </Card>
+                                        )}
+                                    </Link>
+                                </TableCell>
+                                <TableCell>Rs.{product.price}.00</TableCell>
+                                <TableCell>
+                                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                                        <Rating name="totalrating" value={product.totalrating} readOnly />
+                                        <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
+                                            ({product.ratings.length} ratings)
+                                        </Typography>
+                                    </Box>
+                                </TableCell>
+                                <TableCell>
+                                    <Typography variant="body1" color="textSecondary" paragraph={true}>
+                                        {product.description}
+                                    </Typography>
+                                </TableCell>
+                                <TableCell>
+                                    <Button style={{ backgroundColor: '#BE2308', color: 'white' }} onClick={() => handleDelete(product._id)}>Delete</Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Box>
-        <Divider sx={{ backgroundColor: '#fff', opacity: 0.2, marginY: '20px' }} />
-        <List sx={{ flexGrow: 1 }}>
-          {links.map((item, index) => (
-            <ListItemButton
-              key={index}
-              onClick={() => handleLinkClick(item.link)}
-              sx={{
-                backgroundColor: activeLink === item.link ? '#D1C4E9' : 'transparent',
-                color: activeLink === item.link ? '#4A148C' : '#fff',
-                '&:hover': {
-                  backgroundColor: '#B39DDB',
-                },
-                padding: '12px 16px',
-                borderRadius: '8px',
-                marginBottom: '10px',
-                display: 'flex',
-                alignItems: 'center',
-                transition: 'background-color 0.3s ease',
-              }}
-            >
-              <Box sx={{ marginRight: '10px', fontSize: '18px' }}>{item.icon}</Box>
-              <ListItemText primary={item.name} />
-            </ListItemButton>
-          ))}
-        </List>
-        <Divider sx={{ backgroundColor: '#fff', opacity: 0.2, marginY: '20px' }} />
-        <Box
-          sx={{
-            textAlign: 'center',
-            padding: '10px',
-            backgroundColor: '#6A1B9A',
-            borderRadius: '8px',
-            marginTop: 'auto',
-          }}
-        >
-          Footer Info
-        </Box>
-      </Box>
-
-      {/* Main Content */}
-      <Box sx={{ flexGrow: 1, padding: '20px', overflowY: 'auto' }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Item>
-              {activeLink === 'link1' && <AllOrders />}
-              {activeLink === 'link2' && <Users />}
-              {activeLink === 'link3' && <SellerDashboard />}
-              {activeLink === 'link4' && <UsersChart />}
-            </Item>
-          </Grid>
-        </Grid>
-      </Box>
+    </div>
+    </div>
     </Box>
-  );
-};
+    )  
+}
 
 export default AdminDashboard;
+

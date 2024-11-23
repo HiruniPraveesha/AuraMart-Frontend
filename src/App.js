@@ -16,17 +16,17 @@ import ResetPassword from "./pages/ResetPassword";
 import UserProfile from "./components/buyerComponents/UserProfile";
 import CheckoutSuccess from "./components/buyerComponents/CheckoutSuccess";
 import NotFound from "./components/buyerComponents/NotFound";
-import SellerDashboard from "./components/adminComponents/SellerDashboard";
-import AddProductForm from "./components/adminComponents/AddProductForm";
 import AdminDashboard from "./components/adminComponents/AdminDashboard";
+import AddProductForm from "./components/adminComponents/AddProductForm";
+import Admin2 from "./components/adminComponents/Admin2";
 import Payment from "./components/buyerComponents/Payment";
-// import SellerSignup from "./pages/SellerSignup";
-// import SellerLogin from "./pages/SellerLogin";
-// import { useSellerAuthContext } from "./hooks/useSellerAuthContext";
+import AdminSignup from "./pages/AdminSignup";
+import AdminLogin from "./pages/AdminLogin";
+import { useAdminAuthContext } from "./hooks/useAdminAuthContext";
 
 function App() {
     const { user } = useAuthContext();
-    // const { seller } = useSellerAuthContext();
+    const { admin } = useAdminAuthContext();
     const location = useLocation();
 
     return (
@@ -50,12 +50,12 @@ function App() {
                     <Route path="/payment/:cart" element={<Payment />} exact></Route>
                     <Route path="/checkout-success" element={<CheckoutSuccess />} exact></Route>
                     <Route path="*" element={<NotFound />} exact></Route>
-                    {/* <Route path="/seller-dashboard" element={<SellerDashboard />} exact></Route> */}
+                    <Route path="/admin-dashboard" element={<AdminDashboard />} exact></Route>
                     <Route path="/addProduct" element={<AddProductForm />} exact></Route>
-                    <Route path="/admin-dashboard" element={user ? <AdminDashboard /> : <Navigate to="/login" />} exact></Route>
-                    {/* <Route path="/sign-up/seller" element={<SellerSignup />} exact></Route>
-                    <Route path="/sellerSignup" element={!seller ? <SellerSignup /> : <Navigate to="/seller-dashboard" />} exact></Route>
-                    <Route path="/sellerLogin" element={!seller ? <SellerLogin /> : <Navigate to="/seller-dashboard" />} exact></Route> */}
+                    <Route path="/admin2" element={!admin ? <Admin2 /> : <Navigate to="/admin2" />} exact></Route>
+                    {/* <Route path="/sign-up/admin" element={<AdminSignup />} exact></Route> */}
+                    <Route path="/adminSignup" element={!admin ? <AdminSignup /> : <Navigate to="/admin-dashboard" />} exact></Route>
+                    <Route path="/adminLogin" element={!admin ? <AdminLogin /> : <Navigate to="/admin-dashboard" />} exact></Route>
                 </Routes>
             </main>
 

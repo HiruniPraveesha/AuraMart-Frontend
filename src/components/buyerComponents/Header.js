@@ -48,11 +48,11 @@ const Header = () => {
     return (
         <>
 
-            <AppBar sx={{ background: "#b01083", padding: "15px" }}>
+            <AppBar sx={{ background: "#7B1FA2", padding: "15px" }}>
                 <Toolbar>
                     <Link to="/" style={{ textDecoration: "none" }}>
                         <img
-                            src="/logo1.jpg"
+                            src="/logo.png"
                             alt="Auramart Logo"
                             style={{ height: "50px", width: "auto", display: "block" }}
                         />

@@ -105,7 +105,7 @@ const Home = () => {
                 </Carousel>
             </Box>
 
-            <Box sx={{display: "flex", alignItems: "center", py: 2, px: 4 }}>
+            <Box sx={{display: "flex", alignItems: "center", py: 2, px: 20 }}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12} md={2}>
                         <TextField fullWidth label="Category" value={category} onChange={(e) => setCategory(e.target.value)} size='small'/>
@@ -147,9 +147,9 @@ const Home = () => {
             </Box>
 
             <Grid container>
-                <Grid container spacing={2} sx={{ px: 2 }}>
+                <Grid container spacing={5} sx={{ px: 20 }}>
                     {products.map((product) => (
-                        <Grid item xs={12} md={2} key={product._id} marginY={3}>
+                        <Grid item xs={12} md={3} key={product._id} marginY={3}>
                             <Link to={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
                                 <Card sx={{
                                     display: "flex",
