@@ -21,6 +21,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import Sidebar from "./Sidebar"; // Import Sidebar
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -41,7 +42,7 @@ const UsersChart = () => {
     };
 
     const fetchOrders = async () => {
-      const response = await fetch("http://localhost:7006/api/order/allorders");
+      const response = await fetch("http://localhost:7004/api/order/allorders");
       const json = await response.json();
       if (response.ok) {
         setOrders(json);
@@ -125,67 +126,73 @@ const UsersChart = () => {
   };
 
   return (
-    <Box sx={{ padding: "24px", backgroundColor: theme.palette.background.paper }}>
-      <Grid container spacing={4}>
-        {/* Total Users Card */}
-        <Grid item xs={12} md={6}>
-          <Card sx={{
-            textAlign: "center", boxShadow: 6, borderRadius: 2, "&:hover": { transform: "scale(1.03)" },
-            transition: "transform 0.3s ease-in-out", backgroundColor: theme.palette.primary.light }}>
-            <CardContent>
-              <IconButton>
-                <PersonOutlineOutlinedIcon color="primary" fontSize="large" />
-              </IconButton>
-              <Typography variant="h5" sx={{ fontWeight: "bold", color: theme.palette.primary.dark }}>
-                Total Users
-              </Typography>
-              <Typography variant="h4" color="text.secondary">
-                {users.length}
-              </Typography>
-            </CardContent>
-          </Card>
+    <Box sx={{ display: "flex" }}>
+      {/* Sidebar Section */}
+      <Sidebar />
+
+      {/* Main Content Section */}
+      <Box sx={{ flexGrow: 1, padding: "24px", backgroundColor: theme.palette.background.paper }}>
+        <Grid container spacing={4}>
+          {/* Total Users Card */}
+          <Grid item xs={12} md={6}>
+            <Card sx={{
+              textAlign: "center", boxShadow: 6, borderRadius: 2, "&:hover": { transform: "scale(1.03)" },
+              transition: "transform 0.3s ease-in-out", backgroundColor: theme.palette.primary.light }}>
+              <CardContent>
+                <IconButton>
+                  <PersonOutlineOutlinedIcon color="primary" fontSize="large" />
+                </IconButton>
+                <Typography variant="h5" sx={{ fontWeight: "bold", color: theme.palette.primary.dark }}>
+                  Total Users
+                </Typography>
+                <Typography variant="h4" color="text.secondary">
+                  {users.length}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Total Orders Card */}
+          <Grid item xs={12} md={6}>
+            <Card sx={{
+              textAlign: "center", boxShadow: 6, borderRadius: 2, "&:hover": { transform: "scale(1.03)" },
+              transition: "transform 0.3s ease-in-out", backgroundColor: theme.palette.success.light }}>
+              <CardContent>
+                <IconButton>
+                  <InboxIcon color="success" fontSize="large" />
+                </IconButton>
+                <Typography variant="h5" sx={{ fontWeight: "bold", color: theme.palette.success.dark }}>
+                  Total Orders
+                </Typography>
+                <Typography variant="h4" color="text.secondary">
+                  {orders.length}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
 
-        {/* Total Orders Card */}
-        <Grid item xs={12} md={6}>
-          <Card sx={{
-            textAlign: "center", boxShadow: 6, borderRadius: 2, "&:hover": { transform: "scale(1.03)" },
-            transition: "transform 0.3s ease-in-out", backgroundColor: theme.palette.success.light }}>
-            <CardContent>
-              <IconButton>
-                <InboxIcon color="success" fontSize="large" />
-              </IconButton>
-              <Typography variant="h5" sx={{ fontWeight: "bold", color: theme.palette.success.dark }}>
-                Total Orders
+        {/* Charts Section */}
+        <Grid container spacing={4} sx={{ marginTop: "30px" }}>
+          <Grid item xs={12} md={6}>
+            <Card sx={{ padding: "20px", boxShadow: 3, borderRadius: 2 }}>
+              <Typography variant="h6" sx={{ marginBottom: "10px", fontWeight: "bold" }}>
+                Monthly User Registrations
               </Typography>
-              <Typography variant="h4" color="text.secondary">
-                {orders.length}
+              <Bar data={data1} options={options} />
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Card sx={{ padding: "20px", boxShadow: 3, borderRadius: 2 }}>
+              <Typography variant="h6" sx={{ marginBottom: "10px", fontWeight: "bold" }}>
+                Monthly Orders
               </Typography>
-            </CardContent>
-          </Card>
+              <Bar data={data2} options={options} />
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-
-      {/* Charts Section */}
-      <Grid container spacing={4} sx={{ marginTop: "30px" }}>
-        <Grid item xs={12} md={6}>
-          <Card sx={{ padding: "20px", boxShadow: 3, borderRadius: 2 }}>
-            <Typography variant="h6" sx={{ marginBottom: "10px", fontWeight: "bold" }}>
-              Monthly User Registrations
-            </Typography>
-            <Bar data={data1} options={options} />
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <Card sx={{ padding: "20px", boxShadow: 3, borderRadius: 2 }}>
-            <Typography variant="h6" sx={{ marginBottom: "10px", fontWeight: "bold" }}>
-              Monthly Orders
-            </Typography>
-            <Bar data={data2} options={options} />
-          </Card>
-        </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 };

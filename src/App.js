@@ -18,30 +18,31 @@ import CheckoutSuccess from "./components/buyerComponents/CheckoutSuccess";
 import NotFound from "./components/buyerComponents/NotFound";
 import AdminDashboard from "./components/adminComponents/AdminDashboard";
 import AddProductForm from "./components/adminComponents/AddProductForm";
-import Admin2 from "./components/adminComponents/Admin2";
 import Payment from "./components/buyerComponents/Payment";
 import AdminSignup from "./pages/AdminSignup";
 import AdminLogin from "./pages/AdminLogin";
 import { useAdminAuthContext } from "./hooks/useAdminAuthContext";
 import Users from "./components/adminComponents/Users";
+import UsersChart from "./components/adminComponents/UsersChart";
+import AllOrders from "./components/adminComponents/AllOrders";
 
 function App() {
     const { user } = useAuthContext();
     const { admin } = useAdminAuthContext();
     const location = useLocation();
 
-    // Define routes to exclude Header and Footer
+    
     const noHeaderFooterRoutes = [
-        "/users",
-        "/statistics",  // Assuming you have a statistics page
-        "/orders",      // Assuming you have an orders page
-        "/products",    // Assuming you have a products page
-        "/addProduct"   // Admin page for adding products
+        "/Users",
+        "/UsersChart",  
+        "/AllOrders",      
+        "/admin-dashboard",    
+        "/addproduct"   
     ];
 
     return (
         <React.Fragment>
-            {/* Conditionally render Header */}
+            
             {!noHeaderFooterRoutes.includes(location.pathname) && <Header />}
 
             <main style={{ marginBottom: "50px" }}>
@@ -57,6 +58,8 @@ function App() {
                     <Route path="/user-profile" element={user ? <UserProfile /> : <Navigate to="/" />} exact></Route>
                     <Route path="/contact" element={<Contact />} exact></Route>
                     <Route path="/users" element={<Users />} exact></Route>
+                    <Route path="/AllOrders" element={<AllOrders />} exact></Route>
+                    <Route path="/UsersChart" element={<UsersChart />} exact></Route>
                     <Route path="/about" element={<About />} exact></Route>
                     <Route path="/payment/:cart" element={<Payment />} exact></Route>
                     <Route path="/checkout-success" element={<CheckoutSuccess />} exact></Route>
