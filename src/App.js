@@ -23,16 +23,26 @@ import Payment from "./components/buyerComponents/Payment";
 import AdminSignup from "./pages/AdminSignup";
 import AdminLogin from "./pages/AdminLogin";
 import { useAdminAuthContext } from "./hooks/useAdminAuthContext";
+import Users from "./components/adminComponents/Users";
 
 function App() {
     const { user } = useAuthContext();
     const { admin } = useAdminAuthContext();
     const location = useLocation();
 
+    // Define routes to exclude Header and Footer
+    const noHeaderFooterRoutes = [
+        "/users",
+        "/statistics",  // Assuming you have a statistics page
+        "/orders",      // Assuming you have an orders page
+        "/products",    // Assuming you have a products page
+        "/addProduct"   // Admin page for adding products
+    ];
+
     return (
         <React.Fragment>
             {/* Conditionally render Header */}
-            {location.pathname !== "/admin-dashboard" && <Header />}
+            {!noHeaderFooterRoutes.includes(location.pathname) && <Header />}
 
             <main style={{ marginBottom: "50px" }}>
                 <Routes>
@@ -46,21 +56,21 @@ function App() {
                     <Route path="/api/user/reset-password/:token" element={<ResetPassword />} exact></Route>
                     <Route path="/user-profile" element={user ? <UserProfile /> : <Navigate to="/" />} exact></Route>
                     <Route path="/contact" element={<Contact />} exact></Route>
+                    <Route path="/users" element={<Users />} exact></Route>
                     <Route path="/about" element={<About />} exact></Route>
                     <Route path="/payment/:cart" element={<Payment />} exact></Route>
                     <Route path="/checkout-success" element={<CheckoutSuccess />} exact></Route>
                     <Route path="*" element={<NotFound />} exact></Route>
                     <Route path="/admin-dashboard" element={<AdminDashboard />} exact></Route>
                     <Route path="/addProduct" element={<AddProductForm />} exact></Route>
-                    <Route path="/admin2" element={!admin ? <Admin2 /> : <Navigate to="/admin2" />} exact></Route>
-                    {/* <Route path="/sign-up/admin" element={<AdminSignup />} exact></Route> */}
                     <Route path="/adminSignup" element={!admin ? <AdminSignup /> : <Navigate to="/admin-dashboard" />} exact></Route>
                     <Route path="/adminLogin" element={!admin ? <AdminLogin /> : <Navigate to="/admin-dashboard" />} exact></Route>
                 </Routes>
             </main>
 
-            {location.pathname !== "/admin-dashboard" && <Footer />}
-                    </React.Fragment>
+            {/* Conditionally render Footer */}
+            {!noHeaderFooterRoutes.includes(location.pathname) && <Footer />}
+        </React.Fragment>
     );
 }
 

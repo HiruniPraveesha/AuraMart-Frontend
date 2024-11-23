@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import Sidebar from "./Sidebar";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -100,95 +101,101 @@ const Users = () => {
     }, [user]);
 
     return (
-        <Box sx={{ overflowX: "hidden" }} display="flex" justifyContent="center" alignItems="center" flexDirection="column" p={4}>
-            <Grid container wrap="nowrap" spacing={2} alignItems="center" mb={4}>
-                <Grid item>
-                    <PersonOutlineOutlinedIcon color="disabled" fontSize="large" />
+        <Box sx={{ display: 'flex' }}>
+            {/* Sidebar */}
+            <Sidebar />
+            
+            {/* Main Content */}
+            <Box sx={{ flexGrow: 1, padding: '20px', overflowY: 'auto' }}>
+                <Grid container wrap="nowrap" spacing={2} alignItems="center" mb={4}>
+                    <Grid item>
+                        <PersonOutlineOutlinedIcon color="disabled" fontSize="large" />
+                    </Grid>
+                    <Grid item>
+                        <Typography sx={{ fontSize: "1.5rem", fontWeight: 'bold' }} textAlign="left">Total Users:</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography sx={{ fontSize: "2rem", fontWeight: 'bold', color: '#4A148C' }} textAlign="left">{users.length}</Typography>
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <Typography sx={{ fontSize: "1.5rem", fontWeight: 'bold' }} textAlign="left">Total Users:</Typography>
-                </Grid>
-                <Grid item>
-                    <Typography sx={{ fontSize: "2rem", fontWeight: 'bold', color: '#4A148C' }} textAlign="left">{users.length}</Typography>
-                </Grid>
-            </Grid>
 
-            <TableContainer component={Paper} sx={{ width: '100%', maxWidth: 900, borderRadius: '10px', boxShadow: 3 }} elevation={3}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead sx={{ backgroundColor: '#4A148C' }}>
-                        <TableRow>
-                            <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Email</TableCell>
-                            <TableCell align="right" sx={{ color: '#fff', fontWeight: 'bold' }}>Full Name</TableCell>
-                            <TableCell align="right" sx={{ color: '#fff', fontWeight: 'bold' }}>Mobile</TableCell>
-                            <TableCell align="right" sx={{ color: '#fff', fontWeight: 'bold' }}>Action</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users.map((user) => (
-                            <TableRow
-                                key={user._id}
-                                sx={{
-                                    '&:last-child td, &:last-child th': { border: 0 },
-                                    '&:hover': { backgroundColor: '#f5f5f5' },
-                                }}
-                            >
-                                <TableCell component="th" scope="row">{user.email}</TableCell>
-                                <TableCell align="right">{user.firstName} {user.lastName}</TableCell>
-                                <TableCell align="right">{user.mobile}</TableCell>
-                                <TableCell align="right">
-                                    <Button
-                                        variant="contained"
-                                        color="error"
-                                        onClick={() => handleOpenDialog('delete', user._id)}
-                                        sx={{ width: '120px', fontWeight: "bold", mr: 1 }}
-                                    >
-                                        Delete
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        sx={{
-                                            backgroundColor: user.isBlocked ? '#d32f2f' : '#4caf50',
-                                            color: 'white',
-                                            width: '120px',
-                                            fontWeight: "bold"
-                                        }}
-                                        onClick={() => handleOpenDialog(user.isBlocked ? 'unblock' : 'block', user._id)}
-                                    >
-                                        {user.isBlocked ? "Unblock" : "Block"}
-                                    </Button>
-                                </TableCell>
+                <TableContainer component={Paper} sx={{ width: '100%', maxWidth: 900, borderRadius: '10px', boxShadow: 3 }} elevation={3}>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead sx={{ backgroundColor: '#4A148C' }}>
+                            <TableRow>
+                                <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Email</TableCell>
+                                <TableCell align="right" sx={{ color: '#fff', fontWeight: 'bold' }}>Full Name</TableCell>
+                                <TableCell align="right" sx={{ color: '#fff', fontWeight: 'bold' }}>Mobile</TableCell>
+                                <TableCell align="right" sx={{ color: '#fff', fontWeight: 'bold' }}>Action</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {users.map((user) => (
+                                <TableRow
+                                    key={user._id}
+                                    sx={{
+                                        '&:last-child td, &:last-child th': { border: 0 },
+                                        '&:hover': { backgroundColor: '#f5f5f5' },
+                                    }}
+                                >
+                                    <TableCell component="th" scope="row">{user.email}</TableCell>
+                                    <TableCell align="right">{user.firstName} {user.lastName}</TableCell>
+                                    <TableCell align="right">{user.mobile}</TableCell>
+                                    <TableCell align="right">
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            onClick={() => handleOpenDialog('delete', user._id)}
+                                            sx={{ width: '120px', fontWeight: "bold", mr: 1 }}
+                                        >
+                                            Delete
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            sx={{
+                                                backgroundColor: user.isBlocked ? '#d32f2f' : '#4caf50',
+                                                color: 'white',
+                                                width: '120px',
+                                                fontWeight: "bold"
+                                            }}
+                                            onClick={() => handleOpenDialog(user.isBlocked ? 'unblock' : 'block', user._id)}
+                                        >
+                                            {user.isBlocked ? "Unblock" : "Block"}
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
 
-            {/* Confirmation Dialog */}
-            <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <DialogTitle>Confirm Action</DialogTitle>
-                <DialogContent>
-                    <Typography variant="body1">
-                        Are you sure you want to {actionType} this user?
-                    </Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog} color="primary">Cancel</Button>
-                    <Button
-                        onClick={() => {
-                            if (actionType === 'delete') {
-                                handleDelete(selectedUserId);
-                            } else if (actionType === 'block') {
-                                blockUser(selectedUserId);
-                            } else if (actionType === 'unblock') {
-                                unblockUser(selectedUserId);
-                            }
-                        }}
-                        color="secondary"
-                    >
-                        {actionType === 'delete' ? "Delete" : actionType === 'block' ? "Block" : "Unblock"}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                {/* Confirmation Dialog */}
+                <Dialog open={openDialog} onClose={handleCloseDialog}>
+                    <DialogTitle>Confirm Action</DialogTitle>
+                    <DialogContent>
+                        <Typography variant="body1">
+                            Are you sure you want to {actionType} this user?
+                        </Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDialog} color="primary">Cancel</Button>
+                        <Button
+                            onClick={() => {
+                                if (actionType === 'delete') {
+                                    handleDelete(selectedUserId);
+                                } else if (actionType === 'block') {
+                                    blockUser(selectedUserId);
+                                } else if (actionType === 'unblock') {
+                                    unblockUser(selectedUserId);
+                                }
+                            }}
+                            color="secondary"
+                        >
+                            {actionType === 'delete' ? "Delete" : actionType === 'block' ? "Block" : "Unblock"}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </Box>
         </Box>
     );
 };
