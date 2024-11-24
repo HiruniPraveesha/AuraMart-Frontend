@@ -18,22 +18,33 @@ import CheckoutSuccess from "./components/buyerComponents/CheckoutSuccess";
 import NotFound from "./components/buyerComponents/NotFound";
 import AdminDashboard from "./components/adminComponents/AdminDashboard";
 import AddProductForm from "./components/adminComponents/AddProductForm";
-import AllOrders from "./components/adminComponents/AllOrders";
-import Admin2 from "./components/adminComponents/Admin2";
 import Payment from "./components/buyerComponents/Payment";
 import AdminSignup from "./pages/AdminSignup";
 import AdminLogin from "./pages/AdminLogin";
 import { useAdminAuthContext } from "./hooks/useAdminAuthContext";
+import Users from "./components/adminComponents/Users";
+import UsersChart from "./components/adminComponents/UsersChart";
+import AllOrders from "./components/adminComponents/AllOrders";
 
 function App() {
     const { user } = useAuthContext();
     const { admin } = useAdminAuthContext();
     const location = useLocation();
 
+    const noHeaderFooterRoutes = [
+        "/Users",
+        "/UsersChart",  
+        "/AllOrders",      
+        "/admin-dashboard",    
+        "/addProduct"   
+    ];
+
+    const shouldShowHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
+
     return (
         <React.Fragment>
             {/* Conditionally render Header */}
-            {location.pathname !== "/admin-dashboard" && location.pathname !== "/addProduct" && <Header />}
+            {shouldShowHeaderFooter && <Header />}
 
             <main style={{ marginBottom: "50px" }}>
                 <Routes>
@@ -47,22 +58,23 @@ function App() {
                     <Route path="/api/user/reset-password/:token" element={<ResetPassword />} exact></Route>
                     <Route path="/user-profile" element={user ? <UserProfile /> : <Navigate to="/" />} exact></Route>
                     <Route path="/contact" element={<Contact />} exact></Route>
+                    <Route path="/users" element={<Users />} exact></Route>
+                    <Route path="/AllOrders" element={<AllOrders />} exact></Route>
+                    <Route path="/UsersChart" element={<UsersChart />} exact></Route>
                     <Route path="/about" element={<About />} exact></Route>
                     <Route path="/payment/:cart" element={<Payment />} exact></Route>
                     <Route path="/checkout-success" element={<CheckoutSuccess />} exact></Route>
                     <Route path="*" element={<NotFound />} exact></Route>
                     <Route path="/admin-dashboard" element={<AdminDashboard />} exact></Route>
                     <Route path="/addProduct" element={<AddProductForm />} exact></Route>
-                    <Route path="/allOrders" element={<AllOrders />} exact></Route>
-                    <Route path="/admin2" element={!admin ? <Admin2 /> : <Navigate to="/admin2" />} exact></Route>
-                    {/* <Route path="/sign-up/admin" element={<AdminSignup />} exact></Route> */}
                     <Route path="/adminSignup" element={!admin ? <AdminSignup /> : <Navigate to="/admin-dashboard" />} exact></Route>
                     <Route path="/adminLogin" element={!admin ? <AdminLogin /> : <Navigate to="/admin-dashboard" />} exact></Route>
                 </Routes>
             </main>
 
-            {location.pathname !== "/admin-dashboard" && <Footer />}
-                    </React.Fragment>
+            {/* Conditionally render Footer */}
+            {shouldShowHeaderFooter && <Footer />}
+        </React.Fragment>
     );
 }
 

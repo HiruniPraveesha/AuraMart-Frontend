@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Box, Card, CardMedia, CardContent, Typography, Rating, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button, Modal, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useProductsContext } from '../../hooks/useProductsContext';
-import { useAdminLogout } from '../../hooks/useAdminLogout'
-import { useAdminAuthContext } from '../../hooks/useAdminAuthContext';
 import Sidebar from './Sidebar';
 
 const AdminDashboard = () => {
-
+  const navigate = useNavigate();
     const { products, dispatch } = useProductsContext()
-    const { admin } = useAdminAuthContext()
 
     const [open, setOpen] = useState(false);
     const [currentProduct, setCurrentProduct] = useState(null);
@@ -55,12 +52,6 @@ const AdminDashboard = () => {
           dispatch({ type: 'UPDATE_PRODUCT', payload: json });
         }
       };
-    
-      const { adminlogout } = useAdminLogout()
-
-      const handleClick = () => {
-          adminlogout()
-      }
     
       const handleOpen = (product) => {
         setCurrentProduct(product);
@@ -122,10 +113,10 @@ const AdminDashboard = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             <Sidebar />
-      <TableContainer component={Paper} sx={{boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)' }}>
+      <TableContainer  sx={{boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)', margin:'20px', borderRadius: "12px" }}>
         <Table>
           <TableHead>
-            <TableRow sx={{ backgroundColor: '#6200EA' }}>
+            <TableRow sx={{ backgroundColor: '#652580' }}>
               <TableCell style={{ fontSize: '18px', fontWeight: 'bold', color: '#FFFFFF' }}>Product</TableCell>
               <TableCell style={{ fontSize: '18px', fontWeight: 'bold', color: '#FFFFFF' }}>Price</TableCell>
               <TableCell style={{ fontSize: '18px', fontWeight: 'bold', color: '#FFFFFF' }}>Total Ratings</TableCell>
@@ -136,7 +127,7 @@ const AdminDashboard = () => {
           <TableBody>
             {products &&
               products.map((product) => (
-                <TableRow key={product._id} sx={{ '&:hover': { backgroundColor: '#F0F0F0' } }}>
+                <TableRow key={product._id} sx={{ '&:hover': { backgroundColor: '#F9F5FF' } }}>
                   <TableCell>
                     <Link to={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
                       {product.images && product.images.length > 0 && (
@@ -176,7 +167,7 @@ const AdminDashboard = () => {
                   </TableCell>
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Rating name="totalrating" value={product.totalrating} readOnly />
+                    <Rating name="totalrating" value={+product.totalrating} readOnly />
                       <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
                         ({product.ratings.length} ratings)
                       </Typography>
@@ -191,7 +182,7 @@ const AdminDashboard = () => {
                     <Button
                       variant="contained"
                       sx={{
-                        backgroundColor: '#D32F2F',
+                        backgroundColor: '#D75151',
                         color: '#FFFFFF',
                         '&:hover': { backgroundColor: '#B71C1C' },
                       }}
@@ -202,9 +193,9 @@ const AdminDashboard = () => {
                     <Button
                       variant="contained"
                       sx={{
-                        backgroundColor: '#1976D2',
+                        backgroundColor: '#519AE3',
                         color: '#FFFFFF',
-                        '&:hover': { backgroundColor: '#388E3C' },
+                        '&:hover': { backgroundColor: '#288FF6' },
                         marginTop: '10px',
                       }}
                       onClick={() => handleOpen(product)}

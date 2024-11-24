@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box } from '@mui/material';
+import { Box, Container, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
-
+import Sidebar from './Sidebar';
 
 const AddProductForm = () => {
     const [product, setProduct] = useState({
@@ -15,8 +15,22 @@ const AddProductForm = () => {
         images: [{ url: '' }],
     });
 
+    const [categories, setCategories] = useState([]);
     const [alertMessage, setAlertMessage] = useState('');
     const [alertType, setAlertType] = useState(''); // 'success' or 'error'
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('http://localhost:7005/api/product/categories');
+                setCategories(response.data); // Set the fetched categories
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -65,15 +79,19 @@ const AddProductForm = () => {
     };
 
     return (
-        <Box sx={{ overflowX: "hidden", display: 'flex', justifyContent: 'center' }}>
-           
-                <div className="content" style={{ width: '100%', maxWidth: '600px' }}>
-                <h1 align="center">Add Product</h1>
+        <Box sx={{ display: 'flex' }}>
+            <Sidebar />
+            <Container style={{ width: '100%', maxWidth: '600px', padding: '20px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}>
+       
+            
+            <h1 style={{ textAlign: 'center', color: '#7B1FA2' }}>
+                Add Product
+            </h1>
 
                 <form
                     onSubmit={handleSubmit}
                     style={{
-                        border: '2px solid #000',
+                        border: '2px solid #D3C1EB',
                         borderRadius: '10px',
                         padding: '20px',
                         backgroundColor: '#f9f9f9',
@@ -134,9 +152,11 @@ const AddProductForm = () => {
                             }}
                         >
                             <option value="">Select a category</option>
-                            <option value="Skin Care">Skin Care</option>
-                            <option value="Hair Care">Hair Care</option>
-                            <option value="Foot Care">Foot Care</option>
+                            {categories.map((category) => (
+                                <option key={category._id} value={category.slug}>
+                                    {category.name}
+                                </option>
+                            ))}
                         </select>
                     </label>
                     <br />
@@ -177,7 +197,7 @@ const AddProductForm = () => {
                     </label>
                     <br />
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <button type="submit">Add Product</button>
+                        <button type="submit" style={{ backgroundColor: '#7B1FA2' }}>Add Product</button>
                     </Box>
                 </form>
 
@@ -198,8 +218,10 @@ const AddProductForm = () => {
                         </div>
                     </Box>
                 )}
-            </div>
             
+            </Container>
+            
+        
         </Box>
     );
 };

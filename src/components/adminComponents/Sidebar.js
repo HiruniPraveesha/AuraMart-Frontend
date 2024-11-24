@@ -1,43 +1,28 @@
-// Sidebar.tsx
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { useLogout } from "../../hooks/useLogout";
 
-const Sidebar = ({ onLinkClick }) => {
-  const [activeLink, setActiveLink] = useState('products');
-
-  const handleLinkClick = (link) => {
-    setActiveLink(link);
-    onLinkClick(link); // Pass the active link to parent component
-  };
+const Sidebar = () => {
+  const [activeLink, setActiveLink] = useState('Users'); 
+  const links = [
+    { name: 'Products', link: '/admin-dashboard', icon: '🛍️' },
+    { name: 'Add Product', link: '/addProduct', icon: '➕' },
+    { name: 'Orders', link: '/AllOrders', icon: '📦' },
+    { name: 'Users', link: '/Users', icon: '👤' },
+    { name: 'Statistics', link: '/UsersChart', icon: '📊' },
+  ];
 
   const {logout} = useLogout();
 
     const handleLogoutClick =()=>{
         logout()
     }
-
-  const links = [
-    { name: 'Products', link: 'products', icon: '🛍️' },
-    { name: 'Add Product', link: 'add-product', icon: '➕' },
-    { name: 'Orders', link: 'orders', icon: '📦' },
-    { name: 'Users', link: 'users', icon: '👤' },
-    { name: 'Statistics', link: 'statistics', icon: '📊' },
-  ];
-
-  const Item = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
 
   return (
     <Box
@@ -67,26 +52,34 @@ const Sidebar = ({ onLinkClick }) => {
       <Divider sx={{ backgroundColor: '#fff', opacity: 0.2, marginY: '20px' }} />
       <List sx={{ flexGrow: 1 }}>
         {links.map((item, index) => (
-          <ListItemButton
+          <Link
             key={index}
-            onClick={() => handleLinkClick(item.link)}
-            sx={{
-              backgroundColor: activeLink === item.link ? '#D1C4E9' : 'transparent',
-              color: activeLink === item.link ? '#4A148C' : '#fff',
-              '&:hover': {
-                backgroundColor: '#B39DDB',
-              },
-              padding: '12px 16px',
-              borderRadius: '8px',
-              marginBottom: '10px',
-              display: 'flex',
-              alignItems: 'center',
-              transition: 'background-color 0.3s ease',
+            to={item.link} // Use Link to navigate
+            style={{
+              textDecoration: 'none',
+              display: 'block',
             }}
           >
-            <Box sx={{ marginRight: '10px', fontSize: '18px' }}>{item.icon}</Box>
-            <ListItemText primary={item.name} />
-          </ListItemButton>
+            <ListItemButton
+              onClick={() => setActiveLink(item.link)} // Set active link on click
+              sx={{
+                backgroundColor: activeLink === item.link ? '#D1C4E9' : 'transparent',
+                color: activeLink === item.link ? '#4A148C' : '#fff',
+                '&:hover': {
+                  backgroundColor: '#B39DDB',
+                },
+                padding: '12px 16px',
+                borderRadius: '8px',
+                marginBottom: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                transition: 'background-color 0.3s ease',
+              }}
+            >
+              <Box sx={{ marginRight: '10px', fontSize: '18px' }}>{item.icon}</Box>
+              <ListItemText primary={item.name} />
+            </ListItemButton>
+          </Link>
         ))}
       </List>
       <Divider sx={{ backgroundColor: '#fff', opacity: 0.2, marginY: '20px' }} />
