@@ -7,7 +7,6 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import Typography from '@mui/material/Typography';
-import WishList from './WishList';
 import Orders from './Orders';
 import UserDashBoard from './UserDashBoard';
 import List from '@mui/material/List';
@@ -102,21 +101,6 @@ const UserProfile = () => {
             </List>
             <List>
               <ListItemButton
-                onClick={() => handleLinkClick('link2')}
-                className={activeLink === 'link2' ? 'active' : ''}
-                sx={{
-                    backgroundColor: activeLink === 'link2' ? '#e0e0e0' : 'transparent', 
-                    '&:hover': {
-                      backgroundColor: 'e0e0e0',
-                    },
-                  }}
-               
-              >
-                <ListItemText primary="My List" />
-              </ListItemButton>
-            </List>
-            <List>
-              <ListItemButton
                 onClick={() => handleLinkClick('link3')}
                 className={activeLink === 'link3' ? 'active' : ''}
                 sx={{
@@ -138,7 +122,6 @@ const UserProfile = () => {
         <Grid item xs={6} md={8}>
           <Item>
           {activeLink === 'link1' && <UserDashBoard />} 
-          {activeLink === 'link2' && <WishList />}
           {activeLink === 'link3' && <Orders />}  
           </Item>
         </Grid>

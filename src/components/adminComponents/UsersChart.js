@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { useAdminAuthContext } from "../../hooks/useAdminAuthContext";
 import {
   Box,
   Card,
@@ -27,7 +27,7 @@ import Sidebar from "./Sidebar"; // Import Sidebar
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const UsersChart = () => {
-  const { user } = useAuthContext();
+  const { admin } = useAdminAuthContext();
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
   const theme = useTheme(); // To access the theme colors for consistency
@@ -49,11 +49,11 @@ const UsersChart = () => {
       }
     };
 
-    if (user) {
+    if (admin) {
       fetchUsers();
       fetchOrders();
     }
-  }, [user]);
+  }, [admin]);
 
   const months = [
     "January", "February", "March", "April", "May", "June",

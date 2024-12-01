@@ -208,12 +208,12 @@ const AboutUsPage = () => {
                             <CardMedia
                                 component="img"
                                 height="250"
-                                image="https://scontent.fcmb11-1.fna.fbcdn.net/v/t39.30808-6/297266063_1122720105325076_7205277370547725961_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEWMwgsI5DJLwK2jvr_IWIKpviymAU27Uam-LKYBTbtRhydFHlZH-Kg2lrQ3WwcofSdS55HlGPu4M87C13kpwAv&_nc_ohc=NAY7sTo7TV4Q7kNvgGgNAoQ&_nc_zt=23&_nc_ht=scontent.fcmb11-1.fna&_nc_gid=Az5LHjfsaiqxkxcWJKkRury&oh=00_AYBnYADj5wah1nRsVAaL9xaG-ICPZdU64KT35Oz99_oNHA&oe=673A470A"
+                                image="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"
                                 alt="team member"
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    Pamudu Kodithuwakku (Founder)
+                                    H.Jayawardhana (Founder)
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis euismod varius augue a ultricies.
@@ -227,12 +227,12 @@ const AboutUsPage = () => {
                             <CardMedia
                                 component="img"
                                 height="250"
-                                image="https://scontent.fcmb11-1.fna.fbcdn.net/v/t39.30808-6/428027104_1494692591461157_2565485871774949154_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHlRou6Gf99tGpmdUIKO7MGoL5cJNwLpzegvlwk3AunNzGLULd7cwmcW0g4reADJM43BzOAHFjYxTs8IkeK46lU&_nc_ohc=YBBbsVu8FOgQ7kNvgEzvWxP&_nc_zt=23&_nc_ht=scontent.fcmb11-1.fna&_nc_gid=AINetEZZFV55vD-SkWB4tfX&oh=00_AYC0dObp-W0bOlpLJZteGJUrBq_GuK1A5g19-ev66kx8dg&oe=673A29DD"
+                                image="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"
                                 alt="team member"
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    Pamudu Pankaja (Co-Founder)
+                                    K. A. Perera (Co-Founder)
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis euismod varius augue a ultricies.
@@ -246,12 +246,12 @@ const AboutUsPage = () => {
                             <CardMedia
                                 component="img"
                                 height="250"
-                                image="https://media.licdn.com/dms/image/v2/D5603AQFQVKrPcavWYQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1726380361738?e=1736985600&v=beta&t=5RQc7CpV92hz6nV-UfzDGRk8WM5u1F3ZXnctY4gLy8s"
+                                image="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg"
                                 alt="team member"
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    Buri Thuwakku (Co-Founder)
+                                    P. P.Kodithuwakku (Co-Founder)
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis euismod varius augue a ultricies.

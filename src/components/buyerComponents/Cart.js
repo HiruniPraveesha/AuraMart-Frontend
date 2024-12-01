@@ -122,24 +122,6 @@ const CartPage = () => {
         setTextFieldValue(event.target.value);
     };
 
-    // const handleCheckout = async () => {
-    //     const stripe = getStripe();
-    //     const response = await fetch('http://localhost:7001/api/checkout/create-checkout-session', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(cart.products),
-    //     });
-    //     console.log(response);
-
-    //     if (response.statusCode === 500) return;
-
-    //     const data = await response.json();
-    //     console.log(data);
-    //     stripe.redirectToCheckout({ sessionId: data.id });
-    // }
-
     const createOrder = (data, actions) => {
         return actions.order
           .create({
@@ -209,15 +191,6 @@ const CartPage = () => {
             </Grid>
 
             <Grid item md={4} xs={12} px={3}>
-                <Card sx={{ mb: "20px", px: '20px' }}>
-                    <CardContent>
-                        <Typography variant="h5" sx={{ mb: '20px', textAlign: 'left', fontWeight: "900" }}>Apply Coupon</Typography>
-                        <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 }, }} >
-                            <TextField size="small" label="Code" fullWidth value={textFieldValue} onChange={handleTextFieldChange} />
-                            <Button color="warning" variant="contained" sx={{ px: "60px" }} onClick={handleApplyCoupon}>Apply</Button>
-                        </Box>
-                    </CardContent>
-                </Card>
                 <Card sx={{ px: '20px', mb: "100px" }}>
                     <CardContent>
                         <Typography variant="h5" sx={{ mb: '20px', textAlign: 'left', fontWeight: "900" }}>Order Summary</Typography>

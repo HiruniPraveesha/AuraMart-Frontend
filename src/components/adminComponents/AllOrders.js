@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { useAdminAuthContext } from "../../hooks/useAdminAuthContext";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -17,7 +17,7 @@ import Sidebar from "./Sidebar";
 
 
 const AllOrders = () => {
-  const { user } = useAuthContext();
+  const { admin } = useAdminAuthContext();
   const [orders, setOrders] = useState([]);
 
   const approveOrder = (id, newStatus) => {
@@ -47,10 +47,10 @@ const AllOrders = () => {
         setOrders(json);
       }
     };
-    if (user) {
+    if (admin) {
       fetchOrders();
     }
-  }, [user]);
+  }, [admin]);
 
   return (
     <Box sx={{ display: "flex" }}>

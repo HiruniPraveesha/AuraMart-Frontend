@@ -19,7 +19,7 @@ const Orders = () => {
 
         const fetchOrder = async () => {
             console.log(user.token)
-            const response = await fetch(`http://localhost:7006/api/order/get-orders`,
+            const response = await fetch(`http://localhost:7003/api/order/get-orders`,
                 {
                     headers: {
                         'Authorization': `Bearer ${user.token}`

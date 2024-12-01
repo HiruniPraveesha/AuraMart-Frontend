@@ -4,7 +4,7 @@ export const useAdminLogout=()=>{
     const {dispatch} = useAdminAuthContext()
 
     const adminlogout = () =>{
-        localStorage.removeItem('seller')
+        localStorage.removeItem('admin')
         dispatch({type:'LOGOUT'})
     }
 

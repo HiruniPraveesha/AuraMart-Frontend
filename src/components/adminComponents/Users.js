@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { useAdminAuthContext } from "../../hooks/useAdminAuthContext";
 import Sidebar from "./Sidebar";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -19,7 +19,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 const Users = () => {
-    const { user } = useAuthContext();
+    const { admin } = useAdminAuthContext();
     const [users, setUsers] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [actionType, setActionType] = useState(null); // Track action type (delete, block, unblock)
@@ -77,6 +77,9 @@ const Users = () => {
         const json = await response.json();
         if (response.ok) {
             setUsers(json);
+            console.log("Success")
+        }else{
+            console.log("error")
         }
     };
 
@@ -95,10 +98,10 @@ const Users = () => {
     };
 
     useEffect(() => {
-        if (user) {
+        if (admin) {
             fetchUsers();
         }
-    }, [user]);
+    }, [admin]);
 
     return (
         <Box sx={{ display: 'flex' }}>

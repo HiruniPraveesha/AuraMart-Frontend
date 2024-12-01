@@ -6,7 +6,7 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-import { useLogout } from "../../hooks/useLogout";
+import { useAdminLogout } from "../../hooks/useAdminLogout";
 
 const Sidebar = () => {
   const [activeLink, setActiveLink] = useState('Users'); 
@@ -18,10 +18,10 @@ const Sidebar = () => {
     { name: 'Statistics', link: '/UsersChart', icon: '📊' },
   ];
 
-  const {logout} = useLogout();
+  const {adminlogout} = useAdminLogout();
 
     const handleLogoutClick =()=>{
-        logout()
+      adminlogout()
     }
 
   return (
