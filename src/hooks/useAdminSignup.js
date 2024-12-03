@@ -30,7 +30,7 @@ export const useAdminSignup = () => {
   
         // update loading state
         setIsLoading(false)
-      }
+      } 
     }
   
     return { adminsignup, isLoading, error }

@@ -31,7 +31,7 @@ const AboutUsPage = () => {
         <div style={{ flexGrow: 1, padding: '16px' }}>
             <ContactBanner>
                 {<br />}
-                <section style={{ display: "flex", alignItems: "center", color: "#EFA7A7", justifyContent: "center" }}>
+                <section style={{ display: "flex", alignItems: "center", color: "#7B1FA2", justifyContent: "center" }}>
                     <SpaIcon sx={{ transform: "scale(2)" }} />
                     <Typography sx={{
                         fontSize: "2rem",
@@ -65,7 +65,7 @@ const AboutUsPage = () => {
                         />
                     </Grid>
                     <Grid item xs={12} sm={7} style={{ backgroundColor: '#ffff' }}>
-                        <Typography variant="h5" style={{ marginBottom: '16px', fontWeight: 'bold', color: '#E57373' }}>
+                        <Typography variant="h5" style={{ marginBottom: '16px', fontWeight: 'bold', color: '#7B1FA2' }}>
                             {<br />}{<br />}Our Story
                         </Typography>
                         <Typography style={{ textAlign: 'justify', fontSize: '1.0rem', backgroundColor: '#ffff' }}>
@@ -87,7 +87,7 @@ const AboutUsPage = () => {
             <section style={{ margin: '32px 0' }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                        <Typography variant="h5" style={{ marginBottom: '16px', fontWeight: 'bold', color: '#E57373' }}>
+                        <Typography variant="h5" style={{ marginBottom: '16px', fontWeight: 'bold', color: '#7B1FA2' }}>
                             <br />Our Mission
                         </Typography>
                         <Typography style={{ textAlign: 'justify', fontSize: '1.0rem' }}>
@@ -110,7 +110,7 @@ const AboutUsPage = () => {
             </section>
 
             {/* Our describution */}
-            <section style={{ margin: '32px 0', backgroundColor: '#FFE4E1' }}>
+            <section style={{ margin: '32px 0', backgroundColor: '#f3e9f7' }}>
                 <Typography>
                     <br />
                 </Typography>

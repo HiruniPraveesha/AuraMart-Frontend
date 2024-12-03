@@ -136,7 +136,7 @@ const Home = () => {
                     </Grid>
 
                     <Grid item xs={12} md={1}>
-                        <Button variant='contained' startIcon={<FilterAltIcon/>} sx={{ backgroundColor: '#EFA7A7', color: 'white', '&:hover': { backgroundColor: '#ff80ab' } }} onClick={handleFilterButtonClick} fullWidth>Filter</Button>
+                        <Button variant='contained' startIcon={<FilterAltIcon/>} sx={{ backgroundColor: '#b257d9', color: 'white', '&:hover': { backgroundColor: '#7B1FA2' } }} onClick={handleFilterButtonClick} fullWidth>Filter</Button>
                     </Grid>
 
                     <Grid item xs={12} md={1}>
