@@ -60,11 +60,12 @@ const AllOrders = () => {
       {/* Main content */}
       <Box
         sx={{
-          marginTop: "30px",
-          padding: "30px",
-          backgroundColor: "#f7f8fa",
-          borderRadius: "8px",
-          flex: 1, // Make the content area take up the remaining space
+          flexGrow: 1,
+          marginLeft: '300px', // Matches sidebar width
+          padding: '20px',
+          overflowY: 'auto',
+          boxSizing: 'border-box',
+          backgroundColor: '#f9f9f9',
         }}
       >
         {/* Orders Header */}

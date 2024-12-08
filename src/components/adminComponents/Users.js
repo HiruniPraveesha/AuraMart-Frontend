@@ -109,7 +109,14 @@ const Users = () => {
             <Sidebar />
             
             {/* Main Content */}
-            <Box sx={{ flexGrow: 1, padding: '20px', overflowY: 'auto' }}>
+            <Box sx={{
+          flexGrow: 1,
+          marginLeft: '300px', // Matches sidebar width
+          padding: '20px',
+          overflowY: 'auto',
+          boxSizing: 'border-box',
+          backgroundColor: '#f9f9f9',
+          }}>
                 <Grid container wrap="nowrap" spacing={2} alignItems="center" mb={4}>
                     <Grid item>
                         <PersonOutlineOutlinedIcon color="disabled" fontSize="large" />
@@ -122,7 +129,7 @@ const Users = () => {
                     </Grid>
                 </Grid>
 
-                <TableContainer component={Paper} sx={{ width: '100%', maxWidth: 900, borderRadius: '10px', boxShadow: 3 }} elevation={3}>
+                <TableContainer component={Paper} sx={{ width: '100%', borderRadius: '10px', boxShadow: 3 }} elevation={3}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead sx={{ backgroundColor: '#652580' }}>
                             <TableRow>

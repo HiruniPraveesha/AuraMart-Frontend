@@ -79,14 +79,24 @@ const AddProductForm = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex'}}>
             <Sidebar />
-            <Container style={{ width: '100%', maxWidth: '600px', padding: '20px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}>
        
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                flexGrow: 1,
+                marginLeft: '300px', // Matches sidebar width
+                padding: '20px',
+                overflowY: 'auto',
+                boxSizing: 'border-box',
+                
+                }}
+            >
             
-            <h1 style={{ textAlign: 'center', color: '#7B1FA2' }}>
-                Add Product
-            </h1>
+            
 
                 <form
                     onSubmit={handleSubmit}
@@ -94,9 +104,14 @@ const AddProductForm = () => {
                         border: '2px solid #D3C1EB',
                         borderRadius: '10px',
                         padding: '20px',
+                        width: '50%',
                         backgroundColor: '#f9f9f9',
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)'
                     }}
                 >
+                    <h1 style={{ textAlign: 'center', color: '#7B1FA2' }}>
+                Add Product
+            </h1>
                     <label>
                         Title:
                         <input
@@ -219,7 +234,7 @@ const AddProductForm = () => {
                     </Box>
                 )}
             
-            </Container>
+            </Box>
             
         
         </Box>

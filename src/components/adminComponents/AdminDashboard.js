@@ -5,7 +5,7 @@ import { useProductsContext } from '../../hooks/useProductsContext';
 import Sidebar from './Sidebar';
 
 const AdminDashboard = () => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
     const { products, dispatch } = useProductsContext()
 
     const [open, setOpen] = useState(false);
@@ -113,7 +113,17 @@ const AdminDashboard = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             <Sidebar />
-      <TableContainer  sx={{boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)', margin:'20px', borderRadius: "12px" }}>
+            <Box
+        sx={{
+          flexGrow: 1,
+          marginLeft: '300px', // Matches sidebar width
+          padding: '20px',
+          overflowY: 'auto',
+          boxSizing: 'border-box',
+          backgroundColor: '#f9f9f9',
+        }}
+      >
+      <TableContainer  sx={{boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: "12px" }}>
         <Table>
           <TableHead>
             <TableRow sx={{ backgroundColor: '#652580' }}>
@@ -208,6 +218,7 @@ const AdminDashboard = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      </Box>
 
       {/* Modal for editing product */}
       <Modal
