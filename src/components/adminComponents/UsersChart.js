@@ -81,8 +81,8 @@ const UsersChart = () => {
       {
         label: "Users Per Month",
         data: userperMonth,
-        backgroundColor: theme.palette.primary.main,
-        borderColor: theme.palette.primary.dark,
+        backgroundColor: "#BF0AFF",
+        borderColor: "#D9D9D9",
         borderWidth: 2,
       },
     ],
@@ -94,8 +94,8 @@ const UsersChart = () => {
       {
         label: "Orders Per Month",
         data: ordersperMonth,
-        backgroundColor: theme.palette.success.main,
-        borderColor: theme.palette.success.dark,
+        backgroundColor: "#DC92F6",
+        borderColor: "#D9D9D9",
         borderWidth: 2,
       },
     ],
@@ -131,18 +131,24 @@ const UsersChart = () => {
       <Sidebar />
 
       {/* Main Content Section */}
-      <Box sx={{ flexGrow: 1, padding: "24px", backgroundColor: theme.palette.background.paper }}>
+      <Box sx={{
+          flexGrow: 1,
+          marginLeft: '300px', // Matches sidebar width
+          padding: '20px',
+          overflowY: 'auto',
+          boxSizing: 'border-box',
+          backgroundColor: '#f9f9f9', }}>
         <Grid container spacing={4}>
           {/* Total Users Card */}
           <Grid item xs={12} md={6}>
             <Card sx={{
               textAlign: "center", boxShadow: 6, borderRadius: 2, "&:hover": { transform: "scale(1.03)" },
-              transition: "transform 0.3s ease-in-out", backgroundColor: theme.palette.primary.light }}>
+              transition: "transform 0.3s ease-in-out", backgroundColor: "#BF0AFF" }}>
               <CardContent>
                 <IconButton>
-                  <PersonOutlineOutlinedIcon color="primary" fontSize="large" />
+                  <PersonOutlineOutlinedIcon color="#4A148C" fontSize="large" />
                 </IconButton>
-                <Typography variant="h5" sx={{ fontWeight: "bold", color: theme.palette.primary.dark }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", color: "#4A148C" }}>
                   Total Users
                 </Typography>
                 <Typography variant="h4" color="text.secondary">
@@ -156,12 +162,12 @@ const UsersChart = () => {
           <Grid item xs={12} md={6}>
             <Card sx={{
               textAlign: "center", boxShadow: 6, borderRadius: 2, "&:hover": { transform: "scale(1.03)" },
-              transition: "transform 0.3s ease-in-out", backgroundColor: theme.palette.success.light }}>
+              transition: "transform 0.3s ease-in-out", backgroundColor: "#DC92F6" }}>
               <CardContent>
                 <IconButton>
-                  <InboxIcon color="success" fontSize="large" />
+                  <InboxIcon color="#4A148C" fontSize="large" />
                 </IconButton>
-                <Typography variant="h5" sx={{ fontWeight: "bold", color: theme.palette.success.dark }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", color: "#4A148C" }}>
                   Total Orders
                 </Typography>
                 <Typography variant="h4" color="text.secondary">

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { Box, Button, Card, CardContent, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { 
+    Box, Button, Card, CardContent, Grid, IconButton, 
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, CircularProgress 
+} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 
 const CartPage = () => {
@@ -11,28 +13,21 @@ const CartPage = () => {
     const [cart, setCart] = useState(null);
     const [textFieldValue, setTextFieldValue] = useState('');
     const [couponApplied, setCouponApplied] = useState(false);
-    const [cartTotal, setCartTotal] = useState(0);
-
 
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                const token = user.token;
+                const token = user?.token;
                 const config = {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
                     },
                 };
-                const response = await axios.get(
-                    "http://localhost:7001/api/checkout/cart",
-                    config
-                );
+                const response = await axios.get("http://localhost:7001/api/checkout/cart", config);
                 setCart(response.data);
-                const total = response.cartTotal;
-                setCartTotal(total);
             } catch (error) {
-                console.log(error.message);
+                console.error("Error fetching cart:", error.message);
             }
         };
 
@@ -41,7 +36,7 @@ const CartPage = () => {
 
     const handleRemove = async (productId) => {
         try {
-            const token = user.token;
+            const token = user?.token;
             const config = {
                 headers: {
                     "Content-Type": "application/json",
@@ -53,104 +48,68 @@ const CartPage = () => {
                 {},
                 config
             );
-            if (response) {
-                const updatedCart = response.data.updatedCart;
-                const newCartTotal = calculateCartTotal(updatedCart.products);
-
-                setCart((prevCart) => ({
-                    ...prevCart,
-                    cartTotal: newCartTotal,
-                    products: prevCart.products.filter(
-                        (item) => item.product._id !== productId
-                    ),
-                }));
+            if (response?.data?.updatedCart) {
+                setCart(response.data.updatedCart);
             }
         } catch (error) {
-            console.log(error.message);
+            console.error("Error removing item:", error.message);
         }
-    };
-
-    const calculateCartTotal = (products) => {
-        let cartTotal = 0;
-        for (let i = 0; i < products.length; i++) {
-            cartTotal += products[i].price * products[i].count;
-        }
-        return cartTotal;
-    };
-
-    const handleApplyCoupon = async () => {
-        const requestBody = { coupon: textFieldValue };
-        const token = user.token;
-
-        const value = await axios.post('http://localhost:7001/api/checkout/cart/applycoupon', requestBody, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            }
-        })
-            .then((response) => {
-                console.log(response.data);
-                setCouponApplied(true)
-                setTimeout(function () {
-                    window.location.reload();
-                }, 2000);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
     };
 
     const handleRemoveAll = async () => {
-        const token = user.token;
-
-        const value = await axios.delete('http://localhost:7001/api/checkout/empty-cart', {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            }
-        })
-            .then((response) => {
-                console.log(response.data);
-                setCart(null);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
-
-    const handleTextFieldChange = (event) => {
-        setTextFieldValue(event.target.value);
-    };
-
-    const createOrder = (data, actions) => {
-        return actions.order
-          .create({
-            purchase_units: [
-              {
-                description: `AyurMart`,
-                amount: {
-                  currency_code: "USD",
-                  value: cart.cartTotal
+        try {
+            const token = user?.token;
+            await axios.delete("http://localhost:7001/api/checkout/empty-cart", {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
                 },
-              },
-            ],
-            // not needed if a shipping address is actually needed
-            application_context: {
-              shipping_preference: "NO_SHIPPING",
-            },
-          })
-      };
+            });
+            setCart(null);
+        } catch (error) {
+            console.error("Error clearing cart:", error.message);
+        }
+    };
+
+    const handleApplyCoupon = async () => {
+        try {
+            const token = user?.token;
+            const response = await axios.post(
+                "http://localhost:7001/api/checkout/cart/applycoupon",
+                { coupon: textFieldValue },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            if (response?.data) {
+                setCouponApplied(true);
+                setTimeout(() => window.location.reload(), 2000);
+            }
+        } catch (error) {
+            console.error("Error applying coupon:", error.message);
+        }
+    };
+
+    const calculateNetTotal = () => {
+        if (!cart) return 0;
+        const { cartTotal, totalAfterDiscount } = cart;
+        return totalAfterDiscount || cartTotal || 0;
+    };
 
     return (
-        <Grid container sx={{ mt: 20 }}>
+        <Grid container sx={{ mt: 5 }}>
+            {/* Cart Table */}
             <Grid item md={8} xs={12} px={3}>
                 <Card>
-                    <CardContent style={{ textAlign: 'center' }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant="h5" sx={{ mb: '20px', textAlign: 'left', fontWeight: "900" }}>Shopping Cart</Typography>
-                            <Button sx={{ textAlign: 'right' }} onClick={handleRemoveAll}>Remove All</Button>
+                    <CardContent>
+                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                            <Typography variant="h5" sx={{ fontWeight: "bold" }}>Shopping Cart</Typography>
+                            <Button color="error" onClick={handleRemoveAll}>Remove All</Button>
                         </Box>
-                        {cart ? (
+                        {cart && cart.products ? (
                             <TableContainer>
                                 <Table>
                                     <TableHead>
@@ -165,14 +124,20 @@ const CartPage = () => {
                                     </TableHead>
                                     <TableBody>
                                         {cart.products.map((item) => (
-                                            <TableRow key={item._id}>
+                                            <TableRow key={item?.product?._id}>
                                                 <TableCell>
-                                                    <img src={item.product.images[0].url} alt={item.product.title} style={{ width: "50px" }} />
+                                                    <img
+                                                        src={item?.product?.images?.[0]?.url || "placeholder.jpg"}
+                                                        alt={item?.product?.title || "No Image"}
+                                                        style={{ width: "50px" }}
+                                                    />
                                                 </TableCell>
-                                                <TableCell>{item.product.title}</TableCell>
-                                                <TableCell>Rs.{item.product.price}.00</TableCell>
-                                                <TableCell>{item.count}</TableCell>
-                                                <TableCell>Rs.{item.product.price * item.count}.00</TableCell>
+                                                <TableCell>{item?.product?.title || "Unknown"}</TableCell>
+                                                <TableCell>Rs.{item?.product?.price || 0}.00</TableCell>
+                                                <TableCell>{item?.count || 0}</TableCell>
+                                                <TableCell>
+                                                    Rs.{(item?.product?.price || 0) * (item?.count || 0)}.00
+                                                </TableCell>
                                                 <TableCell>
                                                     <IconButton onClick={() => handleRemove(item.product._id)}>
                                                         <DeleteIcon color="error" />
@@ -190,37 +155,40 @@ const CartPage = () => {
                 </Card>
             </Grid>
 
+            {/* Order Summary */}
             <Grid item md={4} xs={12} px={3}>
-                <Card sx={{ px: '20px', mb: "100px" }}>
+                <Card>
                     <CardContent>
-                        <Typography variant="h5" sx={{ mb: '20px', textAlign: 'left', fontWeight: "900" }}>Order Summary</Typography>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: "30px" }}>
-                            <Typography variant="body1" sx={{ mb: '20px', textAlign: 'left', fontWeight: "900" }}>Items Total</Typography>
-                            <Typography sx={{ textAlign: 'right' }}>Rs.{cart && cart.cartTotal && cart.tax ? cart.cartTotal - cart.tax : 0}</Typography>
+                        <Typography variant="h5" sx={{ fontWeight: "bold" }}>Order Summary</Typography>
+                        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+                            <Typography>Items Total</Typography>
+                            <Typography>Rs.{cart?.cartTotal - cart?.tax || 0}</Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant="body1" sx={{ mb: '20px', textAlign: 'left', fontWeight: "900" }}>Discount</Typography>
-                            <Typography color="error" sx={{ textAlign: 'right' }}> - Rs.{cart && cart.cartTotal && cart.totalAfterDiscount ? cart.cartTotal - cart.totalAfterDiscount : 0}</Typography>
+                        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+                            <Typography>Discount</Typography>
+                            <Typography color="error">- Rs.{cart?.cartTotal - cart?.totalAfterDiscount || 0}</Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant="body1" sx={{ mb: '20px', textAlign: 'left', fontWeight: "900" }}>Tax</Typography>
-                            <Typography color="error" sx={{ textAlign: 'right' }}> + Rs.{cart && cart.tax ? cart.tax : 0}</Typography>
+                        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+                            <Typography>Tax</Typography>
+                            <Typography>+ Rs.{cart?.tax || 0}</Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant="body1" sx={{ mb: '20px', textAlign: 'left', fontWeight: "900" }}>Net Total</Typography>
-                            <Typography sx={{ textAlign: 'right' }}>Rs.{cart && cart.cartTotal && cart.totalAfterDiscount ? cart.totalAfterDiscount : cart && cart.cartTotal ? cart.cartTotal : 0}</Typography>
+                        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+                            <Typography sx={{ fontWeight: "bold" }}>Net Total</Typography>
+                            <Typography sx={{ fontWeight: "bold" }}>Rs.{calculateNetTotal()}</Typography>
                         </Box>
-                        <h3 align="center" fullWidth variant="contained" color="success">Proceed Checkout with</h3>
-
-                        <Button color="success" variant="contained" sx={{px:"180px"}} LinkComponent={Link} to={`/payment/${cart}`}> PayNow </Button>
-                    </CardContent>
-                    <CardContent>
-
+                        <Button 
+                            fullWidth 
+                            variant="contained" 
+                            color="success" 
+                            component={Link} 
+                            to={`/payment/${cart?._id || ""}`}
+                            sx={{ mt: 3 }}
+                        >
+                            Pay Now
+                        </Button>
                     </CardContent>
                 </Card>
             </Grid>
-
-
         </Grid>
     );
 };

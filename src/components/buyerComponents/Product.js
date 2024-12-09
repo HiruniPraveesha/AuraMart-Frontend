@@ -165,7 +165,7 @@ const Product = () => {
                                             </FormControl>
                                         </Grid>
                                         <Grid item xs={12} marginTop={5}>
-                                            <Button variant="contained" type="submit" fullWidth>
+                                            <Button variant="contained" type="submit" fullWidth style={{backgroundColor: "#a5a2a6"}}>
                                                 Submit
                                             </Button>
                                         </Grid>
@@ -231,7 +231,7 @@ const Product = () => {
                                 </Grid>
 
                                 <Grid item xs={12} mt={3}>
-                                    <Button variant="contained" color="primary" fullWidth onClick={handleAddToCart}>
+                                    <Button variant="contained" style={{backgroundColor: "#b257d9"}}fullWidth onClick={handleAddToCart} >
                                         Add to Cart
                                     </Button>
                                 </Grid>

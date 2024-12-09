@@ -28,8 +28,8 @@ const UserDashBoard = () => {
             )}
             {!isEditing && (
                 <Button onClick={handleEditToggle} variant="contained"
-                    sx={{ color: 'white', backgroundColor: "#EFA7A7", borderColor: 'green', width: '45ch', padding: 2, margin: 2, fontWeight: "bold",'&:hover': {
-      backgroundColor: '#E08F8F', 
+                    sx={{ color: 'white', backgroundColor: "#b257d9", borderColor: 'green', width: '45ch', padding: 2, margin: 2, fontWeight: "bold",'&:hover': {
+      backgroundColor: '#7B1FA2', 
     } }}>
                     Edit
                 </Button>
@@ -43,8 +43,8 @@ const UserDashBoard = () => {
 
             {!isaddressEditing && (
                 <Button onClick={handleAddressToggle} variant="contained"
-                    sx={{ color: 'white', backgroundColor: "#EFA7A7", borderColor: 'green', width: '45ch', padding: 2, margin: 2, fontWeight: "bold",'&:hover': {
-      backgroundColor: '#E08F8F', 
+                    sx={{ color: 'white', backgroundColor: "#b257d9", borderColor: 'green', width: '45ch', padding: 2, margin: 2, fontWeight: "bold",'&:hover': {
+      backgroundColor: '#7B1FA2', 
     } }}>
                     Add Address
                 </Button>

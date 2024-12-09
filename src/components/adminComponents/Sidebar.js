@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { useAdminLogout } from "../../hooks/useAdminLogout";
 
 const Sidebar = () => {
-  const [activeLink, setActiveLink] = useState('Users'); 
+  const [activeLink, setActiveLink] = useState('Users');
   const links = [
     { name: 'Products', link: '/admin-dashboard', icon: '🛍️' },
     { name: 'Add Product', link: '/addProduct', icon: '➕' },
@@ -18,23 +18,26 @@ const Sidebar = () => {
     { name: 'Statistics', link: '/UsersChart', icon: '📊' },
   ];
 
-  const {adminlogout} = useAdminLogout();
+  const { adminlogout } = useAdminLogout();
 
-    const handleLogoutClick =()=>{
-      adminlogout()
-    }
+  const handleLogoutClick = () => {
+    adminlogout();
+  };
 
   return (
     <Box
       sx={{
-        width: '300px',
+        width: '270px',
+        height: '100vh',
         backgroundColor: '#4A148C',
         color: '#fff',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'stretch',
+        position: 'fixed',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
         padding: '20px',
+        top: 0,
+        left: 0,
       }}
     >
       <Box
@@ -50,7 +53,7 @@ const Sidebar = () => {
         Admin Dashboard
       </Box>
       <Divider sx={{ backgroundColor: '#fff', opacity: 0.2, marginY: '20px' }} />
-      <List sx={{ flexGrow: 1 }}>
+      <List sx={{ flexGrow: 1, overflowY: 'auto' }}> {/* Ensure the list can scroll if needed */}
         {links.map((item, index) => (
           <Link
             key={index}
@@ -84,21 +87,21 @@ const Sidebar = () => {
       </List>
       <Divider sx={{ backgroundColor: '#fff', opacity: 0.2, marginY: '20px' }} />
       <Box
-       onClick={handleLogoutClick}
+        onClick={handleLogoutClick}
         sx={{
-            textAlign: 'center',
-            padding: '10px',
-            color: 'white',
-            backgroundColor: '#6A1B9A',
-            textDecoration: 'none',
-            borderRadius: '8px',
-            marginTop: 'auto',
-            cursor: 'pointer',
+          textAlign: 'center',
+          padding: '12px',
+          color: 'white',
+          backgroundColor: '#6A1B9A',
+          textDecoration: 'none',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          marginBottom: '35px', // Add space at the bottom of the button
         }}
         component={Link}
         to="/"
       >
-         Logout
+        Logout
       </Box>
     </Box>
   );
