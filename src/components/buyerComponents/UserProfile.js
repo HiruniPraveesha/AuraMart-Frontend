@@ -68,7 +68,7 @@ const UserProfile = () => {
                     sx={{
                     width:500,
                     height: 100,
-                    backgroundColor: '#EFA7A7'
+                    backgroundColor: '#b257d9'
                   }}
                   
                 />
@@ -90,9 +90,9 @@ const UserProfile = () => {
                 onClick={() => handleLinkClick('link1')}
                 className={activeLink === 'link1' ? 'active' : ''}
                 sx={{
-                    backgroundColor: activeLink === 'link1' ? '#e0e0e0' : 'transparent', 
+                    backgroundColor: activeLink === 'link1' ? '#eef08d' : 'transparent', 
                     '&:hover': {
-                      backgroundColor: '#e0e0e0',
+                      backgroundColor: '#eef08d',
                     },
                   }}
               >
@@ -104,9 +104,11 @@ const UserProfile = () => {
                 onClick={() => handleLinkClick('link3')}
                 className={activeLink === 'link3' ? 'active' : ''}
                 sx={{
-                    backgroundColor: activeLink === 'link3' ? '#e0e0e0' : 'transparent', 
+                    backgroundColor: activeLink === 'link3' ? '#eef08d' : 'transparent', 
+                    fontWeight:"bold",
                     '&:hover': {
-                      backgroundColor: '#e0e0e0',
+                      backgroundColor: '#eef08d'
+                      
                     },
                   }}
                

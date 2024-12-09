@@ -3,7 +3,7 @@ import { Container, Grid, Typography, Button, Link, FormControl, InputLabel, Out
 
 function Footer() {
     return (
-        <Box width="100%" style={{ backgroundColor: '#eee', paddingX: '24px', marginTop: '50px', bottom:'0' }}>
+        <Box width="100%" style={{ backgroundColor: '#f3e9f7', paddingX: '24px', marginTop: '50px', bottom:'0' }}>
             <Container maxWidth="xl">
                 <Grid container spacing={5}>
                     <Grid item xs={12} md={4}>
@@ -13,10 +13,10 @@ function Footer() {
                         <Typography variant="body1" component="p" style={{ marginBottom: '16px' }}>
                             We specialize in herb-based products that are natural, sustainable, and beneficial for your health and beauty.
                         </Typography>
-                        <Link href="/about" color="primary" variant="body2" style={{ marginRight: '8px' }}>
+                        <Link href="/about" color="primary" variant="body2" style={{ marginRight: '100px' ,textDecoration: 'none',color: '#616161', '&:hover': { color: '#000' }}}>
                             About Us
                         </Link>
-                        <Link href="/contact" color="primary" variant="body2" style={{ marginRight: '8px' }}>
+                        <Link href="/contact" color="primary" variant="body2" style={{ marginRight: '8px' ,textDecoration: 'none',color: '#616161', '&:hover': { color: '#000' }}}>
                             Contact Us
                         </Link>
                     </Grid>
@@ -64,14 +64,14 @@ function Footer() {
                                 <InputLabel>Email</InputLabel>
                                 <OutlinedInput label="Email" />
                             </FormControl>
-                            <Button variant="contained" style={{padding: "15px", backgroundColor: '#EFA7A7', color: '#fff', '&:hover': { backgroundColor: '#1976d2' } }}>
+                            <Button variant="contained" style={{padding: "15px", backgroundColor: '#7B1FA2', color: '#fff', '&:hover': { backgroundColor: '#1976d2' } }}>
                                 Subscribe
                             </Button>
                         </Box>
                     </Grid>
 
                 </Grid>
-                <Typography variant="body2" component="p" style={{ marginTop: '16px', paddingBottom: '20px' }}>
+                <Typography variant="body2" component="p" style={{ marginTop: '30px', paddingBottom: '20px', textAlign: 'center' }}>
                     © 2024 Beauty Product Shop. All rights reserved.
                 </Typography>
             </Container>

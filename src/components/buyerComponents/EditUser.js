@@ -146,15 +146,15 @@ const EditInfo = ({ onEditToggle }) => {
                     <Grid item xs={20}
                         style={{ padding: "10" }}>
                         <Button variant="contained" type="submit"
-                            sx={{ color: 'white', backgroundColor: "#EFA7A7", borderColor: 'green', width: '45ch', padding: 2, margin: 2, fontWeight: "bold", '&:hover': {
-      backgroundColor: '#E08F8F',
+                            sx={{ color: 'white', backgroundColor: "#b257d9", borderColor: 'green', width: '45ch', padding: 2, margin: 2, fontWeight: "bold", '&:hover': {
+      backgroundColor: '#7B1FA2',
     } }}
                         >Save</Button>
                     </Grid>
 
                     <Button variant="contained" onClick={handleCancelClick}
-                        sx={{ color: 'white', backgroundColor: "#EFA7A7", borderColor: 'green', width: '45ch', padding: 2, margin: 2, fontWeight: "bold", '&:hover': {
-      backgroundColor: '#E08F8F', 
+                        sx={{ color: 'white', backgroundColor: "#b257d9", borderColor: 'green', width: '45ch', padding: 2, margin: 2, fontWeight: "bold", '&:hover': {
+      backgroundColor: '#7B1FA2', 
     } }}
                     >Back</Button>
                 </Grid>

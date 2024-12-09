@@ -148,7 +148,7 @@ const CartPage = () => {
                     <CardContent style={{ textAlign: 'center' }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography variant="h5" sx={{ mb: '20px', textAlign: 'left', fontWeight: "900" }}>Shopping Cart</Typography>
-                            <Button sx={{ textAlign: 'right' }} onClick={handleRemoveAll}>Remove All</Button>
+                            <Button sx={{ textAlign: 'right' }} onClick={handleRemoveAll} style={{ color: 'red' }}>Remove All</Button>
                         </Box>
                         {cart ? (
                             <TableContainer>
